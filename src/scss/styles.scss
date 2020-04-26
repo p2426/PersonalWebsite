@@ -1,0 +1,222 @@
+// Resets
+p, ul {
+  margin: 0;
+  font-family: consolas;
+  font-size: .8rem;
+}
+
+// Vars
+// Backgrounds
+$app-colour-background-darkest: rgb(30, 30, 30);
+$app-colour-background-darker: rgb(37, 37, 38);
+$app-colour-background-dark: rgb(45, 45, 45);
+$app-colour-background-light: rgb(51, 51, 51);
+$app-colour-background-lighter: rgb(56, 56, 56);
+$app-colour-background-lightest: rgb(60, 60, 60);
+$app-colour-background-notification: rgb(0, 122, 204);
+// Accordion Selected Items
+$app-colour-item-selected: rgb(55, 55, 61);
+// Text
+$app-colour-typography-default: rgb(204,204,204);
+// Text Weights
+$app-fontweight-bold: bold;
+// Heights
+$app-height-toolbar-top: 30px;
+$app-height-toolbar-bottom: 30px;
+// Widths
+$app-width-toolbar-left: 60px;
+// Tags
+canvas { 
+    width: 100%;
+    height: 100%; 
+}
+
+body {
+    margin: 0;
+}
+
+// Classes
+// Toolbars
+.toolbar {
+  &__top {
+    height: $app-height-toolbar-top;
+     background-color: $app-colour-background-lightest;
+  }
+
+  &__left {
+    height: 100%;
+    min-width: $app-width-toolbar-left;
+    background-color: $app-colour-background-light;
+  }
+
+  &__bottom {
+    height: $app-height-toolbar-bottom;
+    width: 100%;
+    top: calc(100vh - 30px);
+    background-color: $app-colour-background-notification;
+  }
+}
+
+// Explorer
+.explorer {
+  width: 220px;
+  background-color: $app-colour-background-darker;
+  flex-shrink: 0;
+  overflow: auto;
+
+  &__header {
+    box-sizing: border-box;
+    height: 35px;
+    padding: .6rem 1.5rem;
+    color: $app-colour-typography-default;
+  }
+}
+
+// Accordion
+@mixin accordion-spacing() {
+  @for $i from 1 through 10 {
+    .accordion--#{$i} {
+      & > li {
+        @if ($i) == 1 {
+          background-color: $app-colour-background-dark;
+        }
+        padding-left: #{$i * 0.6}rem;
+      }
+    }
+  }
+}
+@include accordion-spacing();
+
+.accordion {
+  box-sizing: border-box;
+  display: block;
+  padding: 0;
+
+  color: $app-colour-typography-default;
+
+  &--closed {
+    display: none;
+  }
+
+  & > li {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    min-height: 22px;
+
+    color: $app-colour-typography-default;
+
+    &:hover {
+      background-color: $app-colour-item-selected;
+    }
+  }
+
+  & > li[data-accordion-toggle] {
+    &:before {
+      content: '> ';
+      white-space: pre;
+    }
+  }
+}
+
+// Main Content
+.content {
+
+  &__container {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    height: 100%;
+  
+    background-color: $app-colour-background-darkest;
+  }
+}
+
+// Tabs
+.tab {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  min-width: 120px;
+  padding: .6rem 1.7rem;
+  white-space: nowrap;
+
+  background-color: $app-colour-background-dark;
+  color: $app-colour-typography-default;
+
+  // Tab States
+  &:hover {
+    cursor: pointer;
+
+    & > button {
+      opacity: 1;
+      cursor: pointer;
+    }
+  }
+
+  &:focus {
+    color: red;
+  }
+
+  &:not(:last-child) {
+    border-right: 1px solid $app-colour-background-darker;
+  }
+
+  & > * {
+    user-select: none;
+  }
+
+  & > button {
+    margin: 0;
+    font-family: consolas;
+    font-size: .8rem;
+    border: 0;
+    background: transparent;
+    outline: none;
+  }
+
+  // Close button/icon
+  &--close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    opacity: 0;
+
+    color: $app-colour-typography-default;
+  }
+
+  // Container
+  &bar {
+    display: flex;
+    justify-content: space-between;
+    height: 35px;
+    width: 100%;
+
+    background-color: $app-colour-background-darker;
+
+    &__icon {
+      cursor: pointer;
+      min-width: 35px;
+
+      background-color: transparent;
+    }
+  }
+
+  &__container {
+    display: flex;
+
+    &:last-child {
+      margin-right: 1rem;
+    }
+  }
+}
+
+// Utilities
+.fullheight {
+  display: flex;
+  height: calc(100vh - (#{$app-height-toolbar-top} + #{$app-height-toolbar-bottom}));
+}
