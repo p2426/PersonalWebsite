@@ -13,10 +13,15 @@ export class TabController {
 
         document.body.addEventListener(PageConstants.E_ACCORDION_ITEM_CLICKED, (e) => {
             this.#tabBar.addTab(e.detail);
+            this.#tabBar.focusTab(e.detail);
         });
 
         document.body.addEventListener(PageConstants.E_TAB_REMOVE_CLICKED, (e) => {
             this.#tabBar.removeTab(e.detail);
+        });
+
+        document.body.addEventListener(PageConstants.E_TAB_CLICKED, (e) => {
+            this.#tabBar.focusTab(e.detail);
         });
     }
 }

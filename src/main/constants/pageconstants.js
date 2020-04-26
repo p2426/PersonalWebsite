@@ -15,4 +15,5 @@ export class PageConstants {
 
     // Tab
     static E_TAB_REMOVE_CLICKED = 'TabRemoveClicked';
+    static E_TAB_CLICKED = 'TabClicked';
 }
