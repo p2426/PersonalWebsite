@@ -11,9 +11,9 @@ export class Main {
 		this.update();
 	}
 
-	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: 0x0d0d0d }) {
+	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: 0xff0000, }) {
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(75, sceneSettings.width/sceneSettings.height, 0.1, 1000);
+		this.camera = new THREE.PerspectiveCamera(50, sceneSettings.width/sceneSettings.height, 0.1, 1000);
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.background = new THREE.Color(sceneSettings.colour);
 
@@ -23,7 +23,8 @@ export class Main {
 
 	setCameraSettings(cameraSettings = { enableKeys: true, enableZoom: false, 
 		leftKey: 65, upKey: 87, rightKey: 68, downKey: 83, rightMouse: null, middleMouse: null, 
-		leftMouse: THREE.MOUSE.ROTATE, cameraTarget: { x: 0, y: 0, z: 0 }}) {
+		leftMouse: THREE.MOUSE.ROTATE, cameraPosition: { x: 0, y: 0, z: 0 },
+		cameraTarget: { x: 0, y: 0, z: 0 }}) {
 
 		this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 		this.controls.enableKeys = cameraSettings.enableKeys;
@@ -40,6 +41,7 @@ export class Main {
 			RIGHT: cameraSettings.rightMouse
 		}
 		this.controls.target = new THREE.Vector3(cameraSettings.cameraTarget.x, cameraSettings.cameraTarget.y, cameraSettings.cameraTarget.z);
+		this.setCameraPosition(cameraSettings.cameraPosition.x, cameraSettings.cameraPosition.y, cameraSettings.cameraPosition.z);
 		this.controls.update();
 	
 		//Other Mouse events
@@ -71,11 +73,11 @@ export class Main {
 		});
 
 		// Disabling default rightclick menu
-		if (!eventSettings.enableContentMenu) {
-			window.oncontextmenu = () => { 
-				return false; 
-			}
-		}
+		// if (!eventSettings.enableContentMenu) {
+		// 	window.oncontextmenu = () => { 
+		// 		return false; 
+		// 	}
+		// }
 	}
 
 	update() {
@@ -114,5 +116,9 @@ export class Main {
 	setCameraTarget(x, y, z) {
 		this.controls.target = new THREE.Vector3(x, y, z);
 		this.controls.update();
+	}
+
+	logCamera() {
+		console.log(this.camera.position, this.controls.target);
 	}
 }
