@@ -1,0 +1,96 @@
+
+/*
+ * Vars
+ */
+$card__height: 250px;
+$card__width: 250px;
+$card__margin: 1rem;
+$card__box-shadow: 5px 5px 12px -6px rgba(0,0,0,.4);
+$card__box-shadow--hover: 5px 5px 12px -6px rgba(0,0,0,1);
+$card__border-radius: 4px;
+$card__transition: all .5s;
+
+$card__header--height: 10%;
+$card__header--width: 100%;
+$card__header--margin: 1rem;
+
+$card__actions--height: 20%;
+$card__actions--width: 100%;
+
+/*
+ * Class
+*/
+.card {
+    transition: $card__transition;
+
+    min-height: $card__height;
+    min-width: $card__width;
+    max-width: $card__width;
+    margin: $card__margin;
+    box-shadow: $card__box-shadow;
+    border-radius: $card__border-radius;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &:hover {
+
+        box-shadow: $card__box-shadow--hover;
+
+        & > .card__header {
+            opacity: 1;
+        }
+
+        & > .card__actions {
+            background: $background__colour--primary;
+
+            & > * {
+                opacity: 1;
+            }
+        }
+    }
+
+    &--me {
+        background-image: url("https://phoenixmee.com/onewebmedia/15591478_10154753625524484_5151474850983623752_o2.jpg");
+        background-size: 155%;
+    }
+
+    &--star-shooter {
+        background-image: url("https://phoenixmee.com/onewebmedia/StarShooter_Card.png");
+        background-size: 155%;
+    }
+
+    &--hair-trigger {
+        background-image: url("https://phoenixmee.com/onewebmedia/HairTrigger_Card.png");
+        background-size: 150%;
+        background-position-x: center;
+    }
+
+    &__header {
+        transition: $card__transition;
+
+        opacity: 0;
+
+        overflow-wrap: break-word;
+        margin: $card__header--margin;
+        color: $font__colour--primary;
+    }
+
+    &__actions {
+        transition: $card__transition;
+
+        display: flex;
+        flex-direction: row-reverse;
+        box-sizing: border-box;
+        padding: .5rem 1rem;
+
+        height: $card__actions--height;
+
+        & > * {
+            transition: $card__transition;
+
+            opacity: 0;
+        }
+    }
+}

@@ -1,0 +1,47 @@
+.button {
+    outline: none;
+
+    &__text {
+        @include global__font-family;
+
+        outline: none;
+        cursor: pointer;
+
+        flex-grow: 1;
+        font-weight: bold;
+        font-size: 1rem;
+
+        padding: 1rem 0;
+        margin: 0 .5rem;
+        max-width: 150px;
+        border: 0;
+        background-color: transparent;
+        border-bottom: 1px solid transparent;
+
+        &:hover {
+            color: $font__colour--secondary;
+            border-bottom: 1px solid $font__colour--secondary;
+        }
+    }
+
+    &__icon {
+        outline: none;
+        cursor: pointer;
+
+        padding: 0;
+        border: 0;
+        background-color: transparent;
+        border-radius: 25px;
+        width: 36px;
+        height: 36px;
+
+        & > i {
+            line-height: 1.3;
+        }
+
+        &:hover {
+            background-color: lighten($font__colour--secondary, 15%);
+            color: black;
+        }
+    }
+}

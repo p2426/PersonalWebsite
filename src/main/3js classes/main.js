@@ -14,7 +14,7 @@ export class Main {
 	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: 0xff0000, }) {
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(50, sceneSettings.width/sceneSettings.height, 0.1, 1000);
-		this.renderer = new THREE.WebGLRenderer();
+		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.background = new THREE.Color(sceneSettings.colour);
 
 		this.renderer.setSize(sceneSettings.width, sceneSettings.height);
@@ -92,14 +92,18 @@ export class Main {
 		this.renderer.render(this.scene, this.camera);
 	}
 
+	reRenderScene() {
+		this.renderer.render(this.scene, this.camera);
+	}
+
 	addObjectToScene(obj) {
 		this.objects.push(obj);
 		this.scene.add(obj.getMesh());
 	}
 
-	removeObjectById(string) {
-		let obj = this.objects.find(obj => obj.id === string);
-		let index = this.objects.findIndex(obj => obj.id === string);
+	removeObjectById(id) {
+		let obj = this.objects.find(obj => obj.id === id);
+		let index = this.objects.findIndex(obj => obj.id === id);
 		this.objects.splice(index, 1);
 		this.removeObject(obj);
 	}
@@ -116,9 +120,5 @@ export class Main {
 	setCameraTarget(x, y, z) {
 		this.controls.target = new THREE.Vector3(x, y, z);
 		this.controls.update();
-	}
-
-	logCamera() {
-		console.log(this.camera.position, this.controls.target);
 	}
 }

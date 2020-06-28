@@ -1,22 +1,67 @@
 import * as THREE from 'three';
-import { SceneObject } from './sceneobject';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 
-export class OBJObject extends SceneObject {
+export class OBJObject {
 
-    constructor(obj = undefined, id = "unset", position = {x: 0, y: 0, z: 0}, rotation = {x: 0, y: 0, z: 0},
-        colour = {r: 135, g: 206, b: 235}, update = () => {}) {
-
-        super();
+    constructor(scene = undefined, materialPath = undefined, objectPath = undefined, 
+        id = "unset", position = {x: 0, y: 0, z: 0}, rotation = {x: 0, y: 0, z: 0},
+        scale = {x: 1, y: 1, z: 1}, update = () => {}) {
         
-        this.geometry = obj;
-        this.material = new THREE.MeshBasicMaterial({ color: 0x87ceeb, side: THREE.DoubleSide });
-        this.mesh = new THREE.Mesh(this.geometry.geometry, this.material);
-        //this.mesh.scale.set(this.geometry.scale.x, this.geometry.scale.y, this.geometry.scale.z);
         this.update = update;
 
-        this.setId(id);
-        //this.setColour(colour.r, colour.g, colour.b);
-        this.setPosition(position.x, position.y, position.z);
-        this.setRotation(rotation.x, rotation.y, rotation.z);
+        // load texture
+        var mtlLoader = new MTLLoader();
+        mtlLoader.setMaterialOptions({ side: THREE.FrontSide })
+        mtlLoader.load(materialPath, (materials) => {
+            materials.preload();
+
+            // load model
+            var objLoader = new OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load(objectPath, (object) => {
+
+                this.mesh = object;
+                scene.addObjectToScene(this);
+
+                this.setId(id);
+                this.setScale(scale.x, scale.y, scale.z);
+                this.setPosition(position.x, position.y, position.z);
+                this.setRotation(rotation.x, rotation.y, rotation.z);
+                    
+            }, (xhr) => {
+                console.log('Model: ' + (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            }, (error) => {
+                console.log("Could not load the model");
+            });
+        }, (xhr) => {
+            console.log('Textures: ' + (xhr.loaded / xhr.total * 100 ) + '% loaded');
+        }, (error) => {
+            console.log("Could not load the textures");
+        });
+
+        console.log(this);
     }
+
+    setRotation(x, y, z) {
+        this.mesh.rotation.x = x;
+        this.mesh.rotation.y = y;
+        this.mesh.rotation.z = z;
+    }
+
+    setScale(x, y, z) {
+        this.mesh.scale.x = x;
+        this.mesh.scale.y = y;
+        this.mesh.scale.z = z;
+    }
+
+    setPosition(x, y, z) {
+        this.mesh.position.set(x, y, z);
+    }
+
+    setId(string) {
+        this.id = string;
+    }
+
+    getMesh() { return this.mesh }
 }
