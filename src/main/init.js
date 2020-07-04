@@ -1,18 +1,14 @@
-/*
- * General Imports
-*/
+// External Imports
 import * as THREE from 'three';
+
+// General Imports
 import { UIFunctions } from './uifunctions';
 import { MathFunctions } from './mathfunctions';
 
-/*
- * Page Components
-*/
-import { SubjectController } from './components/subject-controller';
+// UI
+import { Header } from './ui/header';
 
-/*
- * 3JS Classes
-*/
+// 3JS Classes
 import { Main } from './3js classes/main';
 import { Line } from './3js classes/line';
 import { Cube } from './3js classes/cube';
@@ -25,8 +21,8 @@ import { AtlasShader } from './shaders/atlasshader';
 var main;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Initialise Components
-    new SubjectController();
+    // Initialise UI
+    Header.init();
 
     // initialise scene, camera and renderer - packed in main
     //main = new Main();

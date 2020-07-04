@@ -11,7 +11,7 @@ export class Main {
 		this.update();
 	}
 
-	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: 0xff0000, }) {
+	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight - 3, colour: 0xff0000, }) {
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(50, sceneSettings.width/sceneSettings.height, 0.1, 1000);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
