@@ -29,7 +29,7 @@ export class SceneObject {
     }
 
     setColour(r, g, b) {
-        this.material.color.setRGB(r / 255, g / 255, b / 255);
+        this.properties.material.color.setRGB(r / 255, g / 255, b / 255);
     }
 
     setPosition(x, y, z) {

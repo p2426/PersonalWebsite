@@ -2,8 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // Main
-export class Main {
+export class Scene {
 	constructor(sceneSettings, cameraSettings, eventSettings) {
+		this.sceneSettings = sceneSettings;
+		this.cameraSettings = cameraSettings;
+		this.eventSettings = eventSettings;
 		this.objects = [];
 		this.createScene(sceneSettings);
 		this.setCameraSettings(cameraSettings);
@@ -11,11 +14,11 @@ export class Main {
 		this.update();
 	}
 
-	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight - 3, colour: 0xff0000, }) {
+	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: new THREE.Color() }) {
 		this.scene = new THREE.Scene();
+		this.scene.background = sceneSettings.colour;
 		this.camera = new THREE.PerspectiveCamera(50, sceneSettings.width/sceneSettings.height, 0.1, 1000);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
-		this.renderer.background = new THREE.Color(sceneSettings.colour);
 
 		this.renderer.setSize(sceneSettings.width, sceneSettings.height);
     	sceneSettings.parent.appendChild(this.renderer.domElement);
@@ -86,7 +89,7 @@ export class Main {
 		});
 
 		this.objects.forEach((object) => {
-			object.update();
+			object.properties.update();
 		});
 	
 		this.renderer.render(this.scene, this.camera);
