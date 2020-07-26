@@ -1,6 +1,12 @@
 export class Component {
 
-    #events = ["click"];
+    events = ["click"];
+
+    noDisplayClass = 'no--display';
+    noScrollClass = 'no--scroll';
+    noOpacityClass = 'no--opacity';
+    flexCenterClass = 'flex--center';
+    flexTopClass = 'flex--top';
 
     element;
 
@@ -14,7 +20,7 @@ export class Component {
     }
 
     bindEvents() {
-        this.#events.forEach(eventName => {
+        this.events.forEach(eventName => {
             if (this[eventName] instanceof Function) {
                 this.element?.addEventListener(eventName, this[eventName].bind(this));
             }

@@ -1,0 +1,51 @@
+.panel {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background-color: white;
+    padding: 1rem;
+
+    width: 100%;
+    min-height: 90vh;
+    border-radius: 4px;
+    box-shadow: 3px 3px 5px 0px rgba(126, 126, 126, 1);
+
+    &__group {
+        transition: opacity .4s;
+        flex-direction: column;
+    }
+
+    &__item {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 200px;
+        padding: 1rem;
+        border-top: 1px solid lightgrey;
+
+        &--title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+
+            & > p {
+                font-family: dispence;
+                font-size: .8rem;
+
+                &:last-child {  
+                    color: grey;
+                }
+            }
+        }
+
+        &--content {
+            display: flex;
+            flex-direction: column;
+
+            & > p {
+                font-family: Calibri;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+.tab {
+    &__bar {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        align-content: space-between;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    &__button {
+        font-family: dispence;
+        font-size: .9rem;
+        position: relative;
+        flex-grow: 1;
+
+        background: transparent;
+        outline: none;
+        border: 0;
+        padding: 1rem 0;
+
+        &:hover, &:focus {
+            &::before {
+                content: url("./images/MenuSelectGlove.png");
+                display: inline-block;
+                position: absolute;
+                transform: scale(.4);
+                left: -19%;
+                top: -28%;
+            }
+        }
+    }
+}

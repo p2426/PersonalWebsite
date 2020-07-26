@@ -3,7 +3,6 @@
         transition: opacity 0.4s;
 
         text-align: center;
-        padding: 45.5vh 0;
 
         &--title {
             font-family: dispence;
@@ -12,6 +11,7 @@
         &--enter {
             font-family: dispence;
             font-size: x-large;
+            position: relative;
             background: transparent;
             border: 3px solid transparent;
             margin: 2rem;
@@ -21,9 +21,18 @@
                 outline: none;
             }
 
-            &:hover {
+            &:hover, &:focus {
                 border: 3px solid black;
                 border-radius: 2px;
+
+                &::before {
+                    content: url("./images/MenuSelectGlove.png");
+                    display: inline-block;
+                    position: absolute;
+                    transform: scale(.4);
+                    left: -50%;
+                    top: -35%;
+                }
             }
         }
     }

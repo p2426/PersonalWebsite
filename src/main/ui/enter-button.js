@@ -5,10 +5,8 @@ export class EnterButton extends Component {
     static namespace = 'enter-button';
     static instances = [];
 
-    #noDisplayClass = 'no--display';
-    #noScrollClass = 'no--scroll';
-    #noOpacityClass = 'no--opacity';
     #parentSelector = '.landing__content';
+    #footerSelector = 'footer';
 
     static init(scope = document.body) {
         EnterButton.instances = scope.querySelectorAll('[' + ['data', EnterButton.namespace, 'id'].join('-') + ']');
@@ -19,20 +17,26 @@ export class EnterButton extends Component {
         super(node);
     }
 
-    click() {
-        const parentEl = this.element.closest(this.#parentSelector);
+    click(e) {
         const htmlEl = document.documentElement;
+        const backgroundEl = document.body.firstElementChild;
+        const parentEl = this.element.closest(this.#parentSelector);
         const mainContent = parentEl.nextElementSibling;
+        const footerEl = document.getElementById(this.#footerSelector);
 
-        parentEl.classList.add(this.#noOpacityClass);
+        parentEl.classList.add(this.noOpacityClass);
 
         setTimeout(() => {
-            parentEl.classList.add(this.#noDisplayClass);
-            mainContent.classList.remove(this.#noDisplayClass);
+            backgroundEl.classList.remove(this.flexCenterClass);
+            backgroundEl.classList.add(this.flexTopClass);
+            parentEl.classList.add(this.noDisplayClass);
+            mainContent.classList.remove(this.noDisplayClass);
+            footerEl.classList.remove(this.noDisplayClass);
 
             setTimeout(() => {
-                htmlEl.classList.remove(this.#noScrollClass);
-                mainContent.classList.remove(this.#noOpacityClass);
+                htmlEl.classList.remove(this.noScrollClass);
+                mainContent.classList.remove(this.noOpacityClass);
+                footerEl.classList.remove(this.noOpacityClass);
             }, 50);
         }, 400);
     }

@@ -7,6 +7,7 @@ import { MathFunctions } from './mathfunctions';
 
 // UI
 import { EnterButton } from './ui/enter-button';
+import { TabController } from './ui/tab/tab-controller';
 
 // 3JS Classes
 import { Scene } from './3js classes/scene';
@@ -21,6 +22,8 @@ import { AtlasShader } from './shaders/atlasshader';
 document.addEventListener("DOMContentLoaded", () => {
     // Initialise UI
     EnterButton.init();
+    TabController.init();
+    TabController.buttonInstances[0].click();
 
     // // Initialise a Scene
     // const mainSettings = {
