@@ -6,8 +6,6 @@ import { UIFunctions } from './uifunctions';
 import { MathFunctions } from './mathfunctions';
 
 // UI
-import { EnterButton } from './ui/enter-button';
-import { TabController } from './ui/tab/tab-controller';
 
 // 3JS Classes
 import { Scene } from './3js classes/scene';
@@ -18,23 +16,10 @@ import { Atlas } from './3js classes/atlas';
 import { OBJObject } from './3js classes/objobject';
 import { CustomShader } from './shaders/customshader';
 import { AtlasShader } from './shaders/atlasshader';
+import { Events } from './ui/events';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Initialise UI
-    EnterButton.init();
-    TabController.init();
-    TabController.buttonInstances[0].click();
-
-    // // Initialise a Scene
-    // const mainSettings = {
-    //     parent: document.body,
-    //     width: window.innerWidth,
-    //     height: window.innerHeight,
-    //     colour: new THREE.Color(1, 1, 1)
-    // };
-    // let scene = new Scene(mainSettings);
-    // scene.setCameraPosition(0, 10, -10);
-    // scene.setCameraTarget(0, 0, 0);
+    Events.attachUIClickEvents();
 
     // // Textures
     // const textureLoader = new THREE.TextureLoader();
@@ -54,9 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     //         map: floorDiffuseTex,
     //     })
     // });
-    // scene.addObjectToScene(cube);
 
-    // // Directional Light
+    // Directional Light
     // let directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
     // let directionalLightTarget = new THREE.Object3D();
     // scene.scene.add(directionalLight);

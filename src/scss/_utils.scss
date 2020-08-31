@@ -1,7 +1,8 @@
 .no {
     &--scroll { overflow: hidden; }
-    &--display { display: none; }
+    &--display { display: none !important; }
     &--opacity { opacity: 0; }
+    &--pointer-events { pointer-events: none; }
 }
 
 .flex {

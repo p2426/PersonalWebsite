@@ -3,25 +3,29 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // Main
 export class Scene {
-	constructor(sceneSettings, cameraSettings, eventSettings) {
+	constructor(sceneSettings, cameraSettings, eventSettings, styleSettings) {
 		this.sceneSettings = sceneSettings;
 		this.cameraSettings = cameraSettings;
 		this.eventSettings = eventSettings;
+		this.styleSettings = styleSettings;
 		this.objects = [];
-		this.createScene(sceneSettings);
-		this.setCameraSettings(cameraSettings);
-		this.attachEvents(eventSettings);
+		this.createScene(this.sceneSettings);
+		this.setCameraSettings(this.cameraSettings);
+		this.attachEvents(this.eventSettings);
+		this.applyStyleSettings(this.styleSettings);
 		this.update();
 	}
 
-	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: new THREE.Color() }) {
+	createScene(sceneSettings = { parent: document.body, width: window.innerWidth, height: window.innerHeight, colour: new THREE.Color(), antialias: true, alpha: true }) {
 		this.scene = new THREE.Scene();
-		this.scene.background = sceneSettings.colour;
 		this.camera = new THREE.PerspectiveCamera(50, sceneSettings.width/sceneSettings.height, 0.1, 1000);
-		this.renderer = new THREE.WebGLRenderer({ antialias: true });
-
+		this.renderer = new THREE.WebGLRenderer({ antialias: sceneSettings.antialias, alpha: sceneSettings.alpha });
 		this.renderer.setSize(sceneSettings.width, sceneSettings.height);
-    	sceneSettings.parent.appendChild(this.renderer.domElement);
+		sceneSettings.parent.appendChild(this.renderer.domElement);
+		
+		sceneSettings.alpha ?
+		this.renderer.setClearColor(sceneSettings.colour, 0) :
+		this.scene.background = sceneSettings.colour;
 	}
 
 	setCameraSettings(cameraSettings = { enableKeys: true, enableZoom: false, 
@@ -81,6 +85,12 @@ export class Scene {
 		// 		return false; 
 		// 	}
 		// }
+	}
+
+	applyStyleSettings(styleSettings = { position: 'absolute', bottom: 0, zIndex: 1 }) {
+		this.renderer.domElement.style.position = styleSettings.position;
+		this.renderer.domElement.style.bottom = styleSettings.bottom;
+		this.renderer.domElement.style.zIndex = styleSettings.zIndex;
 	}
 
 	update() {

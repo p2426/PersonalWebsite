@@ -21,7 +21,7 @@ export class Cube extends SceneObject {
         if (settings) { 
             Object.keys(settings).map(x => this.properties[x] = settings[x]);
         }
-        
+
         this.geometry = new THREE.BoxGeometry(
             this.properties.scale.x, 
             this.properties.scale.y, 
@@ -31,11 +31,11 @@ export class Cube extends SceneObject {
             this.properties.segments.z );
 
         if (this.properties.shader) {
-            this.material = new THREE.ShaderMaterial({
+            this.properties.material = new THREE.ShaderMaterial({
                 side: THREE.DoubleSide,
-                uniforms: shader.getUniforms(),
-                vertexShader: shader.vertexShader.getContent(),
-                fragmentShader: shader.fragmentShader.getContent()
+                uniforms: this.properties.shader.getUniforms(),
+                vertexShader: this.properties.shader.vertexShader.getContent(),
+                fragmentShader: this.properties.shader.fragmentShader.getContent()
             });
             this.properties.shader.init(this.geometry);
         } else {

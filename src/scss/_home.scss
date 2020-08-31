@@ -1,0 +1,13 @@
+.home {
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    position: absolute;
+    background-color: transparent;
+    outline: none;
+
+    font-size: 1rem;
+    border: 0;
+    z-index: 2;
+
+    transition: opacity .3s;
+}

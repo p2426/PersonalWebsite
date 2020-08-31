@@ -1,10 +1,10 @@
 export class MathFunctions {
     static lerp(a, b, w) {
-        return a + w*(b-a);
+        return a + w * (b-a);
     }
 
     static clampedLerp(a, b, w) {
-        return MathFunctions.clamp(a, b, a + w*(b-a));
+        return MathFunctions.clamp(a, b, a + w * (b-a));
     }
 
     static clamp(min, max, v) {
