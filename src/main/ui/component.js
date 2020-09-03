@@ -1,22 +1,12 @@
 export class Component {
 
-    events = ["click"];
-
-    noDisplayClass = 'no--display';
-    noScrollClass = 'no--scroll';
-    noOpacityClass = 'no--opacity';
-    flexCenterClass = 'flex--center';
-    flexTopClass = 'flex--top';
+    events = ["click", "mousemove"];
 
     element;
 
     constructor(node) {
         this.element = node;
         this.bindEvents();
-    }
-
-    toggleClass(namespace, classname) {
-        this.element.classList.toggle(namespace + classname);
     }
 
     bindEvents() {

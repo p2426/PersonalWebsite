@@ -17,8 +17,11 @@ import { OBJObject } from './3js classes/objobject';
 import { CustomShader } from './shaders/customshader';
 import { AtlasShader } from './shaders/atlasshader';
 import { Events } from './ui/events';
+import { Cursor } from './cursor';
 
 document.addEventListener("DOMContentLoaded", () => {
+    Cursor.init();
+    Events.attachCursorEvents();
     Events.attachUIClickEvents();
 
     // // Textures

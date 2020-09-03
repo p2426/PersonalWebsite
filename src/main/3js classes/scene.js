@@ -3,7 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // Main
 export class Scene {
-	constructor(sceneSettings, cameraSettings, eventSettings, styleSettings) {
+	constructor(FPS = 150, sceneSettings, cameraSettings, eventSettings, styleSettings) {
+		this.FPS = FPS;
 		this.sceneSettings = sceneSettings;
 		this.cameraSettings = cameraSettings;
 		this.eventSettings = eventSettings;
@@ -13,6 +14,12 @@ export class Scene {
 		this.setCameraSettings(this.cameraSettings);
 		this.attachEvents(this.eventSettings);
 		this.applyStyleSettings(this.styleSettings);
+
+		// Setup render loop
+		this.now = Date.now();
+		this.delta = Date.now();
+		this.then = Date.now();
+		this.interval = 1000 / this.FPS;
 		this.update();
 	}
 
@@ -93,16 +100,25 @@ export class Scene {
 		this.renderer.domElement.style.zIndex = styleSettings.zIndex;
 	}
 
+	// Render loop
 	update() {
 		requestAnimationFrame(() => { 
 			this.update(); 
 		});
+		this.now = Date.now();
+		this.delta = this.now - this.then;
 
-		this.objects.forEach((object) => {
-			object.properties.update();
-		});
-	
-		this.renderer.render(this.scene, this.camera);
+		// Rendering to be targeted to the given framerate
+		if (this.delta > this.interval) {
+			
+			this.objects.forEach((object) => {
+				object.properties.update();
+			});
+		
+			this.renderer.render(this.scene, this.camera);
+
+			this.then = this.now - (this.delta % this.interval);
+		}
 	}
 
 	reRenderScene() {
