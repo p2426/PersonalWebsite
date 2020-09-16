@@ -81,9 +81,7 @@ export class Scene {
 	attachEvents(eventSettings = { enableContentMenu: false }) {
 		// Resize is essential
 		window.addEventListener("resize", () => {
-			this.camera.aspect = window.innerWidth / window.innerHeight;
-			this.camera.updateProjectionMatrix();
-			this.renderer.setSize(window.innerWidth, window.innerHeight);
+			this.resetSceneDimensions();
 		});
 
 		// Disabling default rightclick menu
@@ -92,6 +90,12 @@ export class Scene {
 		// 		return false; 
 		// 	}
 		// }
+	}
+
+	resetSceneDimensions() {
+		this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.camera.updateProjectionMatrix();
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
 	applyStyleSettings(styleSettings = { position: 'absolute', bottom: 0, zIndex: 1 }) {
