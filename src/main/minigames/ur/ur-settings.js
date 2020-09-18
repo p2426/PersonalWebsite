@@ -4,7 +4,7 @@ export class TheRoyalGameOfUrSettings {
 
     // Logic and rendering framerate are the same
     static RenderFPS = 150;
-    static LogicFPS = 60;
+    static LogicFPS = 120;
 
     static sceneSettings = {
         parent: document.body,
@@ -24,7 +24,7 @@ export class TheRoyalGameOfUrSettings {
         downKey: null, 
         rightMouse: null, 
         middleMouse: null, 
-        leftMouse: THREE.MOUSE.ROTATE, 
+        leftMouse: null, 
         cameraPosition: { x: 0, y: 0, z: 0 },
         cameraTarget: { x: 0, y: 0, z: 0 }
     };

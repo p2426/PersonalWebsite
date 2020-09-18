@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { CSSClasses } from "../ui/css-classes";
 
 export class Minigame {
@@ -7,11 +8,14 @@ export class Minigame {
     then;
     interval;
     logicFPS;
+    ray = new THREE.Raycaster();
 
     constructor() {
         this.init();
     }
 
+    // Controls the standard 'fade' of elements when creating a new minigame
+    // Sets a reference of time, and fires Start() and Update() for children
     init() {
         document.body.classList.add(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
         setTimeout(() => {

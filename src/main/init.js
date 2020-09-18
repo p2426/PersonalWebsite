@@ -19,6 +19,7 @@ import { AtlasShader } from './shaders/atlasshader';
 import { Events } from './ui/events';
 import { Cursor } from './cursor';
 
+// Main entry point
 document.addEventListener("DOMContentLoaded", () => {
     Cursor.init();
     Events.attachCursorEvents();

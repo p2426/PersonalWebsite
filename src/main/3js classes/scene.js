@@ -145,6 +145,10 @@ export class Scene {
 		this.scene.remove(obj.getMesh());
 	}
 
+	getCameraPosition() {
+		return this.camera.position;
+	}
+
 	setCameraPosition(x, y, z) {
 		this.camera.position.set(x, y, z);
 		this.controls.update();
@@ -153,5 +157,9 @@ export class Scene {
 	setCameraTarget(x, y, z) {
 		this.controls.target = new THREE.Vector3(x, y, z);
 		this.controls.update();
+	}
+
+	setCameraRotation(x, y, z) {
+		this.camera.rotation.set(x, y, z);
 	}
 }
