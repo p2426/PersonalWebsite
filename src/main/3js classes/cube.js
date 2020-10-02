@@ -48,13 +48,10 @@ export class Cube extends SceneObject {
         this.mesh = new THREE.Mesh(this.geometry, this.properties.material);
 
         this.setId(this.properties.id);
-        this.setPosition(
-            this.properties.position.x, 
-            this.properties.position.y, 
-            this.properties.position.z);
-        this.setRotation(
-            this.properties.rotation.x, 
-            this.properties.rotation.y, 
-            this.properties.rotation.z);
+        this.setPosition(this.properties.position.x, this.properties.position.y, this.properties.position.z);
+        this.setRotation(this.properties.rotation.x, this.properties.rotation.y, this.properties.rotation.z);
+
+        // Give mesh a reference to this class for ease of Raycasting
+        this.mesh.classRef = this;
     }
 }

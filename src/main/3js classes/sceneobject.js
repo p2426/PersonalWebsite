@@ -38,6 +38,10 @@ export class SceneObject {
         this.mesh.position.set(x, y, z);
     }
 
+    setScale(x, y, z) {
+        this.mesh.scale.set(x, y, z);
+    }
+
     setLinePositions(arr) {
         this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
     }

@@ -6,6 +6,11 @@ export class TheRoyalGameOfUrSettings {
     static RenderFPS = 150;
     static LogicFPS = 120;
 
+    static gameSettings = {
+        boardArea: [8, 3],
+        gamePieceCount: 12
+    }
+
     static sceneSettings = {
         parent: document.body,
         width: window.innerWidth,

@@ -2,30 +2,49 @@ import * as THREE from 'three';
 import { SceneObject } from './sceneobject';
 
 export class Sphere extends SceneObject {
-    constructor(id = "unset", shader = undefined, radius = .5, segments = {w: 8, h: 8}, position = {x: 0, y: 0, z: 0},
-        colour = {r: 135, g: 206, b: 235}) {
 
+    properties = {
+        id: "unset",
+        shader: undefined,
+        material: new THREE.MeshBasicMaterial({ color: 0x87ceeb }),
+        radius: 0.5,
+        scale: {x: 1, y: 1, z: 1},
+        segments: {w: 16, h: 16},
+        position: {x: 0, y: 0, z: 0},
+        rotation: {x: 0, y: 0, z: 0},
+        colour: {r: 135, g: 206, b: 235},
+        update: () => {},
+    }
+
+    constructor(settings) {
         super();
 
-        this.geometry = new THREE.SphereBufferGeometry(radius, segments.w, segments.h);
-
-        if (shader) {
-            this.shader = shader;
-            this.material = new THREE.ShaderMaterial({
-                side: THREE.DoubleSide,
-                uniforms: shader.getUniforms(),
-                vertexShader: shader.vertexShader.getContent(),
-                fragmentShader: shader.fragmentShader.getContent()
-            });
-            shader.init(this.geometry);
-        } else {
-            this.material = new THREE.MeshBasicMaterial({ color: 0x87ceeb });
-            this.setColour(colour.r, colour.g, colour.b);
+        if (settings) { 
+            Object.keys(settings).map(x => this.properties[x] = settings[x]);
         }
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.geometry = new THREE.SphereBufferGeometry(this.properties.radius, this.properties.segments.w, this.properties.segments.h);
 
-        this.setId(id);
-        this.setPosition(position.x, position.y, position.z);
+        if (this.properties.shader) {
+            this.properties.material = new THREE.ShaderMaterial({
+                side: THREE.DoubleSide,
+                uniforms: this.properties.shader.getUniforms(),
+                vertexShader: this.properties.shader.vertexShader.getContent(),
+                fragmentShader: this.properties.shader.fragmentShader.getContent()
+            });
+            this.properties.shader.init(this.geometry);
+        } else {
+            this.setColour(this.properties.colour.r, this.properties.colour.g, this.properties.colour.b);
+        }
+
+        this.mesh = new THREE.Mesh(this.geometry, this.properties.material);
+
+        this.setId(this.properties.id);
+        this.setPosition(this.properties.position.x, this.properties.position.y, this.properties.position.z);
+        this.setRotation(this.properties.rotation.x, this.properties.rotation.y, this.properties.rotation.z);
+        this.setScale(this.properties.scale.x, this.properties.scale.y, this.properties.scale.z);
+
+        // Give mesh a reference to this class for ease of Raycasting
+        this.mesh.classRef = this;
     }
 }
