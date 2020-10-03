@@ -149,8 +149,7 @@ export class TheRoyalGameOfUr extends Minigame {
             // Math.cos(this.time) * radius, 0, Math.sin(this.time) * radius
 
             // ********************************************** //
-			this.then = this.now - (this.delta % this.interval);
-		}
-
+            this.then = this.now - (this.delta % this.interval);
+        }
 	}
 }
