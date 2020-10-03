@@ -30,9 +30,9 @@ export class Scene {
 		this.renderer.setSize(sceneSettings.width, sceneSettings.height);
 		sceneSettings.parent.appendChild(this.renderer.domElement);
 		
-		sceneSettings.alpha ?
-		this.renderer.setClearColor(sceneSettings.colour, 0) :
-		this.scene.background = sceneSettings.colour;
+		sceneSettings.alpha ? this.renderer.setClearColor(sceneSettings.colour, 0) : this.scene.background = sceneSettings.colour;
+		this.renderer.shadowMap.enabled = true;
+		this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	}
 
 	setCameraSettings(cameraSettings = { enableKeys: true, enableZoom: false, 

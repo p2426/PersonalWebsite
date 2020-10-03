@@ -3,6 +3,8 @@ import { CSSClasses } from "../ui/css-classes";
 
 export class Minigame {
 
+    static deltaTime = this.delta;
+
     now;
     delta;
     then;
@@ -34,10 +36,10 @@ export class Minigame {
     }
 
     // "Interface" function, as starting point for minigame extensions
-    start() { }
+    start() {}
 
     // "Interface" function, as the main loop for minigame extensions
-    update() { }
+    update() {}
 
     // Argument positions represent number keys on keyboard, called by keypress, not 0 indexed
     debug(...args) {
