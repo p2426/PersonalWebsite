@@ -1,13 +1,9 @@
 import * as THREE from 'three';
+import { MathFunctions } from '../../mathfunctions';
+import { Cursor } from '../../cursor';
 import { TheRoyalGameOfUrSettings } from './ur-settings';
 import { Minigame } from '../minigame';
 import { Scene } from '../../3js classes/scene';
-import { Cube } from '../../3js classes/cube';
-import { SpriteObj } from '../../3js classes/spriteobj';
-import { MathFunctions } from '../../mathfunctions';
-import { Cursor } from '../../cursor';
-import { Sphere } from '../../3js classes/sphere';
-import { GamePiece } from './gamepiece';
 import { BoardCreator } from './boardcreator';
 
 export class TheRoyalGameOfUr extends Minigame {
