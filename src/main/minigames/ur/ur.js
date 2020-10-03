@@ -33,7 +33,7 @@ export class TheRoyalGameOfUr extends Minigame {
             () => {
                 this.cameraLerpTargetX = 0;
                 this.cameraLerpTargetY = 10;
-                this.cameraLerpTargetZ = 10;
+                this.cameraLerpTargetZ = 10; 
                 this.scene.setCameraTarget(3.5, 0, 0);
             },
             () => {
