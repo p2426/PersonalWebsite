@@ -20,28 +20,28 @@ export class BoardCreator {
             gamePieceCount: 7,
             pieceProperties: {
                 // Top horizontal strip
-                0: {occupied: false, territory: 0, owner: null, special: true},
-                1: {occupied: false, territory: 0, owner: null, special: false},
-                2: {occupied: false, territory: 0, owner: null, special: false},
-                3: {occupied: false, territory: 0, owner: null, special: false},
-                6: {occupied: false, territory: 0, owner: null, special: true},
-                7: {occupied: false, territory: 0, owner: null, special: false},
+                0: {occupied: null, territory: 0, owner: 2, special: true},
+                1: {occupied: null, territory: 0, owner: 2, special: false},
+                2: {occupied: null, territory: 0, owner: 2, special: false},
+                3: {occupied: null, territory: 0, owner: 2, special: false},
+                6: {occupied: null, territory: 0, owner: 2, special: true},
+                7: {occupied: null, territory: 0, owner: 2, special: false},
                 // Middle horizontal strip
-                8: {occupied: false, territory: 1, owner: null, special: false},
-                9: {occupied: false, territory: 1, owner: null, special: false},
-                10: {occupied: false, territory: 1, owner: null, special: false},
-                11: {occupied: false, territory: 0, owner: null, special: true},
-                12: {occupied: false, territory: 1, owner: null, special: false},
-                13: {occupied: false, territory: 1, owner: null, special: false},
-                14: {occupied: false, territory: 1, owner: null, special: false},
-                15: {occupied: false, territory: 1, owner: null, special: false},
+                8: {occupied: null, territory: 1, owner: 0, special: false},
+                9: {occupied: null, territory: 1, owner: 0, special: false},
+                10: {occupied: null, territory: 1, owner: 0, special: false},
+                11: {occupied: null, territory: 0, owner: 0, special: true},
+                12: {occupied: null, territory: 1, owner: 0, special: false},
+                13: {occupied: null, territory: 1, owner: 0, special: false},
+                14: {occupied: null, territory: 1, owner: 0, special: false},
+                15: {occupied: null, territory: 1, owner: 0, special: false},
                 // Bottom horizontal strip
-                16: {occupied: false, territory: 0, owner: null, special: true},
-                17: {occupied: false, territory: 0, owner: null, special: false},
-                18: {occupied: false, territory: 0, owner: null, special: false},
-                19: {occupied: false, territory: 0, owner: null, special: false},
-                22: {occupied: false, territory: 0, owner: null, special: true},
-                23: {occupied: false, territory: 0, owner: null, special: false},
+                16: {occupied: null, territory: 0, owner: 1, special: true},
+                17: {occupied: null, territory: 0, owner: 1, special: false},
+                18: {occupied: null, territory: 0, owner: 1, special: false},
+                19: {occupied: null, territory: 0, owner: 1, special: false},
+                22: {occupied: null, territory: 0, owner: 1, special: true},
+                23: {occupied: null, territory: 0, owner: 1, special: false},
             }
         }
     }
@@ -86,8 +86,8 @@ export class BoardCreator {
             const gamePiece = new GamePiece({
                 id:         "gamePiece",
                 scale:      {x: .6, y: .2, z: .6},
-                position:   player === 1 ? {x: i, y: -.5, z: 3} : {x: i, y: -.5, z: -3},
-                material:   new THREE.MeshStandardMaterial({ color: 0x87a6cc }),
+                position:   player === 1 ? {x: i - (i/3), y: -.25, z: 3.5} : {x: i - (i/3), y: -.25, z: -1.5},
+                material:   new THREE.MeshStandardMaterial({color: player === 1 ? 0x919191 : 0xeddec7 }),
             }, player);
             this.gamePieces.push(gamePiece);
         }

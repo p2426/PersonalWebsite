@@ -39,6 +39,7 @@ export class Sphere extends SceneObject {
 
         this.mesh = new THREE.Mesh(this.geometry, this.properties.material);
         this.mesh.castShadow = true;
+        this.mesh.receiveShadow = true;
         // Give mesh a reference to this class for ease of Raycasting
         this.mesh.classRef = this;
 

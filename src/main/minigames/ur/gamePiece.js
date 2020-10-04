@@ -9,6 +9,7 @@ export class GamePiece extends Sphere {
 
     owner = null;   // 1 = player, 2 = computer
 
+    initialPosition;
     startPosition;
     lerpPos = {x: 0, y: 0, z: 0};
     lerpSpeed = 6;
@@ -21,8 +22,9 @@ export class GamePiece extends Sphere {
         super(settings);
         this.setOwner(owner);
 
-        this.startPosition = new THREE.Vector3().copy(this.getPosition());
-        this.setLerpPosition(this.startPosition.x, this.startPosition.y, this.startPosition.z);
+        this.initialPosition = new THREE.Vector3().copy(this.getPosition());
+        this.startPosition = this.initialPosition;
+        this.setLerpPosition(this.initialPosition);
     }
 
     update() {
@@ -34,15 +36,18 @@ export class GamePiece extends Sphere {
     }
 
     resetPosition() {
-        this.setLerpPosition(this.startPosition.x, this.startPosition.y, this.startPosition.z);
+        this.setLerpPosition(this.initialPosition);
     }
 
-    setLerpPosition(x, y, z) {
-        this.lerpPos.x = x;
-        this.lerpPos.y = y;
-        this.lerpPos.z = z;
+    setLerpPosition(vec3) {
+        this.lerpPos.x = vec3.x;
+        this.lerpPos.y = vec3.y;
+        this.lerpPos.z = vec3.z;
     }
 
     getOwner() { return this.owner; }
     setOwner(v) { this.owner = v; }
+
+    getStartPosition() { return this.startPosition; }
+    setStartPosition(vec3) { this.startPosition = vec3; }
 }

@@ -24,7 +24,6 @@ export class TheRoyalGameOfUr extends Minigame {
     cameraLerpTargetY = 8;
     cameraLerpTargetZ = 8;
 
-    gamePieceGuidePos = new THREE.Vector3();
     selectedGamePiece = null;
 
     constructor() {
@@ -83,20 +82,48 @@ export class TheRoyalGameOfUr extends Minigame {
         this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);
         this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
 
-        // DOM Events
+        // Events
         document.body.addEventListener('mousedown', () => {
+            this.initialBoardPiece = null;
+            this.lastLegalBoardPiece = null;
+
             if (this.gamePieceRay.hits[0]) {
                 this.selectedGamePiece = this.gamePieceRay.hits[0].object.classRef;
+                this.selectedGamePiece.setStartPosition(new THREE.Vector3().copy(this.selectedGamePiece.getPosition()));
+                if (this.hoveredBoardPiece) {
+                    this.initialBoardPiece = this.hoveredBoardPiece;
+                    this.initialBoardPiece.setOccupiedGamePiece(null);
+                }
             }
         });
 
         document.body.addEventListener('mouseup', () => {
             if (this.selectedGamePiece) {
-                if (!this.gamePieceGuidePos) {
-                    this.selectedGamePiece.resetPosition();
+                if (!this.hoveredBoardPiece) {
+                    this.selectedGamePiece.setLerpPosition(this.selectedGamePiece.getStartPosition());
+                    this.initialBoardPiece?.setOccupiedGamePiece(this.selectedGamePiece);
                     this.selectedGamePiece = null;
                 } else {
-                    this.selectedGamePiece.setLerpPosition(this.gamePieceGuidePos.x, this.gamePieceGuidePos.y, this.gamePieceGuidePos.z);
+                    const gamePieceOnBoardPiece = this.lastLegalBoardPiece.getOccupiedGamePiece();
+                    if (gamePieceOnBoardPiece) {
+                        if (gamePieceOnBoardPiece.getOwner() !== this.selectedGamePiece.getOwner()) {
+                            gamePieceOnBoardPiece.resetPosition();
+                            this.lastLegalBoardPiece.setOccupiedGamePiece(null);
+                        } else {
+                            this.selectedGamePiece.setLerpPosition(this.selectedGamePiece.getStartPosition());
+                            this.initialBoardPiece?.setOccupiedGamePiece(this.selectedGamePiece);
+                            this.selectedGamePiece = null;
+                            return;
+                        }
+                    }
+                    if (!this.hoveredBoardPiece.isLegalMove(this.selectedGamePiece.getOwner())) {
+                        this.selectedGamePiece.setLerpPosition(this.selectedGamePiece.getStartPosition());
+                        this.initialBoardPiece?.setOccupiedGamePiece(this.selectedGamePiece);
+                        this.selectedGamePiece = null;
+                        return;
+                    }
+                    this.selectedGamePiece.setLerpPosition(this.lastLegalBoardPiece.getGamePieceSlot());
+                    this.lastLegalBoardPiece.setOccupiedGamePiece(this.selectedGamePiece);
                     this.selectedGamePiece = null;
                 }
             }
@@ -117,7 +144,7 @@ export class TheRoyalGameOfUr extends Minigame {
             this.deltaTime = this.interval / 1000;
             this.time += this.deltaTime;
             TheRoyalGameOfUr.deltaTime = this.deltaTime;
-            // ******************************** //
+            // ************************************** //
 
             this.scene.setCameraPosition(MathFunctions.lerp(this.scene.getCameraPosition().x, this.cameraLerpTargetX, this.deltaTime),
                                          MathFunctions.lerp(this.scene.getCameraPosition().y, this.cameraLerpTargetY, this.deltaTime),
@@ -128,12 +155,13 @@ export class TheRoyalGameOfUr extends Minigame {
             this.gamePieceRay.setFromCamera({ x: Cursor.getNormalisedX(), y: Cursor.getNormalisedY() }, this.scene.camera);
             this.gamePieceRay.hits = this.gamePieceRay.intersectObjects(this.gamePieceRay.objects, false);
 
-            this.gamePieceGuidePos = this.ray.hits[0]?.face.normal.y > 0 ? new THREE.Vector3().addVectors(this.ray.hits[0].object.position, new THREE.Vector3(0, .35, 0)) : null;
+            this.hoveredBoardPiece = this.ray.hits[0]?.object.classRef;
 
-            // console.log(this.ray.hits[0]?.object.classRef);
-
-            if (this.selectedGamePiece && this.gamePieceGuidePos) {
-                this.selectedGamePiece.setLerpPosition(this.gamePieceGuidePos.x, this.gamePieceGuidePos.y, this.gamePieceGuidePos.z);
+            if (this.selectedGamePiece && this.hoveredBoardPiece) {
+                if (this.hoveredBoardPiece.isLegalMove(this.selectedGamePiece.getOwner())) {
+                    this.lastLegalBoardPiece = this.hoveredBoardPiece;
+                    this.selectedGamePiece.setLerpPosition(this.lastLegalBoardPiece.getGamePieceSlot());
+                }
             }
 
             // Orbit example, make sure that cameraTarget is in the middle of it?
