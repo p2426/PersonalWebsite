@@ -10,7 +10,7 @@ export class TheRoyalGameOfUrSettings {
         parent: document.body,
         width: window.innerWidth,
         height: window.innerHeight,
-        colour: new THREE.Color(1, 0, 0),
+        colour: new THREE.Color(0, 0, 0),
         antialias: true,
         alpha: true
     };

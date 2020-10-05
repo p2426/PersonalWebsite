@@ -5,6 +5,7 @@ import { TheRoyalGameOfUrSettings } from './ur-settings';
 import { Minigame } from '../minigame';
 import { Scene } from '../../3js classes/scene';
 import { BoardCreator } from './boardcreator';
+import { Cube } from '../../3js classes/cube';
 
 export class TheRoyalGameOfUr extends Minigame {
     
@@ -23,6 +24,7 @@ export class TheRoyalGameOfUr extends Minigame {
     cameraLerpTargetX = 0;
     cameraLerpTargetY = 8;
     cameraLerpTargetZ = 8;
+    cameraOrbit = false;
 
     selectedGamePiece = null;
 
@@ -39,13 +41,22 @@ export class TheRoyalGameOfUr extends Minigame {
                 this.cameraLerpTargetX = 10;
                 this.cameraLerpTargetY = 0;
                 this.cameraLerpTargetZ = 0;
-            }
+            },
+            () => {
+                this.cameraLerpTargetX = 3.5;
+                this.cameraLerpTargetY = 12;
+                this.cameraLerpTargetZ = 1.1;
+                this.scene.setCameraTarget(3.5, 0, 1);
+            },
+            () => {
+                this.cameraOrbit = !this.cameraOrbit;
+            },
         );
         this.scene.resetSceneDimensions();
     }
     
     createAmbientLight() {
-        let ambientLight = new THREE.AmbientLight(0xffffff, .2);
+        let ambientLight = new THREE.AmbientLight(0xffffff, .1);
         this.scene.scene.add(ambientLight);
         return ambientLight;
     }
@@ -61,9 +72,39 @@ export class TheRoyalGameOfUr extends Minigame {
     }
 
     start() {
+        // Turn off alpha background
+        this.scene.renderer.setClearAlpha(1);
+
         // Camera Target
         this.scene.setCameraPosition(0, 10, 10);
         this.scene.setCameraTarget(3.5, 0, 0);
+
+        // Floor
+        const textureLoader = new THREE.TextureLoader();
+        const floorMap = textureLoader.load("./textures/ur/Flooring_Stone_001_COLOR.png");
+        const floorAo = textureLoader.load("./textures/ur/Flooring_Stone_001_OCC.png");
+        const floorNormal = textureLoader.load("./textures/ur/Flooring_Stone_001_NRM.png");
+        floorMap.minFilter = THREE.LinearFilter;
+        floorAo.minFilter = THREE.LinearFilter;
+        floorNormal.minFilter = THREE.LinearFilter;
+
+        for (let i = 1; i < 4; i++) {
+            for (let j = 1; j < 4; j++) {
+                let floor = new Cube({
+                    id:         "floor",
+                    scale:      {x: 15, y: 1, z: 15},
+                    position:   {x: j * 15 - 30, y: -.8, z: i * 15 - 30},
+                    colour:     {r: 255, g: 255, b: 255},
+                    material:   new THREE.MeshStandardMaterial({
+                        map: floorMap,
+                        aoMap: floorAo,
+                        normalMap: floorNormal,
+                    })
+                });
+                this.scene.addObjectToScene(floor);
+            }
+        }
+
 
         // Lights
         this.pointLight = this.createPointLight();
@@ -165,9 +206,11 @@ export class TheRoyalGameOfUr extends Minigame {
             }
 
             // Orbit example, make sure that cameraTarget is in the middle of it?
-            // this.cameraLerpTargetX = Math.cos(this.time) * 10;
-            // this.cameraLerpTargetY = 10;
-            // this.cameraLerpTargetZ = Math.sin(this.time) * 10;
+            if (this.cameraOrbit) {
+                this.cameraLerpTargetX = Math.cos(this.time) * 10;
+                this.cameraLerpTargetY = 10;
+                this.cameraLerpTargetZ = Math.sin(this.time) * 10;
+            }
 
             // Orbit motion
             // Math.cos(this.time) * radius, 0, Math.sin(this.time) * radius
