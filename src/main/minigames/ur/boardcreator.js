@@ -18,7 +18,7 @@ export class BoardCreator {
 
         // territory: 0 = neutral(n), 1 = war(w)
         standard: {
-            boardArea: [8, 3],
+            boardArea: [17, 7],
             gamePieceCount: 7,
             pieceProperties: {
                 // Top horizontal strip
@@ -48,14 +48,13 @@ export class BoardCreator {
         }
     }
 
-    selectedBoardType = null;
-    boardPieces = [];
+    boardPieces = {};
+    accBoardPieceXPos = 0;
     gamePieces = [];
 
     constructor(type) {
         this.textureLoader = new THREE.TextureLoader();
-        //this.createBoardPieces(type);
-        this.loadTexs();
+        this.createBoardPieces(type, 0, 0);
         this.createGamePiecesForPlayer(type, 1);
         this.createGamePiecesForPlayer(type, 2);
     }
@@ -82,36 +81,51 @@ export class BoardCreator {
     //     return this.boardPieces;
     // }
 
-    createBoardPieces(type) {
+    createBoardPieces(type, x, z) {
 
-        for (let z = 0; z < 7; z++) {
-            for (let x = 0; x < 17; x++) {
-                
-                if ((x === 9 && z === 0 || x === 9 && z === 6) || 
-                    (x === 10 && z === 0 || x === 10 && z === 6) ||
-                    (x === 11 && z === 0 || x === 11 && z === 6)) continue;
-
+        new Promise((resolve, reject) => {
+            if ((x === 9 && z === 0 || x === 9 && z === 6) || 
+            (x === 10 && z === 0 || x === 10 && z === 6) ||
+            (x === 11 && z === 0 || x === 11 && z === 6)) {
+                reject();
+            } else {
                 this.textureLoader.load(
-                    "./textures/ur/photoreal/originalurtopdown-" + String(x).padStart(2, '0') + "-" + String(z).padStart(2, '0') + ".png",
-                    (tex) => {
-                        tex.minFilter = THREE.LinearFilter;
-
-                        const scaleX = 1 * (tex.image.width / 100);
-                        const scaleZ = 1 * (tex.image.height / 100);
-
-                        let boardPiece = new Cube({
-                            id:         "cube",
-                            scale:      {x: scaleX, y: .5, z: scaleZ},
-                            position:   {x: x, y: 0, z: z},
-                            colour:     {r: 255, g: 255, b: 255},
-                            material:   new THREE.MeshStandardMaterial({map: tex})
-                        });
-
-                        this.boardPieces.push(boardPiece);
-                        console.log(this.boardPieces);
-                });
+                    "./textures/ur/photoreal/originalurtopdown-" + String(x).padStart(2, '0') + "-" + String(z).padStart(2, '0') + ".png", 
+                    (texture) => { resolve(texture) },
+                    undefined,
+                    () => { reject() }
+                );
             }
-        }
+        }).then((texture) => {
+            texture.minFilter = THREE.LinearFilter;
+
+            const scaleX = texture.image.width / 100;
+            const scaleZ = texture.image.height / 100;
+
+            let boardPiece = new Cube({
+                id:         "cube",
+                scale:      {x: scaleX, y: .5, z: scaleZ},
+                position:   {x: scaleX / 2 + this.accBoardPieceXPos, y: 0, z: z},
+                colour:     {r: 255, g: 255, b: 255},
+                material:   new THREE.MeshStandardMaterial({map: texture})
+            });
+
+            console.log(this.accBoardPieceXPos);
+            this.accBoardPieceXPos += scaleX;
+
+        }).catch(() => {
+            
+        }).finally(() => {
+            x++;
+            if (x === this.boardtype[type].boardArea[0]) {
+                x = 0;
+                this.accBoardPieceXPos = 0;
+                z++;
+            }
+            if (z !== this.boardtype[type].boardArea[1]) {
+                this.createBoardPieces(type, x, z);
+            }
+        });
 
         // for (let z = 0; z < this.boardtype[type].boardArea[1]; z++) {
         //     for (let x = 0; x < this.boardtype[type].boardArea[0]; x++) {
@@ -132,50 +146,6 @@ export class BoardCreator {
         //     }
         // }
         // return this.boardPieces;
-    }
-
-    loadTexs() {
-        const xSize = 17;
-        const zSize = 7;
-        let currentX = 0;
-        let currentZ = 0;
-        let textures = [];
-        const textureLoader = new THREE.TextureLoader();
-
-        texPromise(currentX, currentZ);
-
-        function texPromise(x, z) {
-            new Promise((resolve, reject) => {
-
-                if ((x === 9 && z === 0 || x === 9 && z === 6) || 
-                (x === 10 && z === 0 || x === 10 && z === 6) ||
-                (x === 11 && z === 0 || x === 11 && z === 6)) {
-                    reject();
-                } else {
-                    const dir = "./textures/ur/photoreal/originalurtopdown-" + String(x).padStart(2, '0') + "-" + String(z).padStart(2, '0') + ".png"
-                    textureLoader.load(dir, 
-                        (tex) => { resolve(tex) },
-                        undefined,
-                        () => { reject() }
-                    );
-                }
-                
-            }).then((tex) => {
-                textures.push(tex);
-                console.log("finished loading texture:", z, x);
-            }).catch(() => {
-                console.log("lol something failed");
-            }).finally(() => {
-                currentX++;
-                if (currentX == xSize) {
-                    currentX = 0;
-                    currentZ++;
-                }
-                if (currentZ !== zSize) {
-                    texPromise(currentX, currentZ);
-                }
-            });
-        }
     }
 
     getBoardPieces() { return this.boardPieces; }
