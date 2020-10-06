@@ -84,6 +84,13 @@ export class Scene {
 			this.resetSceneDimensions();
 		});
 
+		// An object is created, add it to scene
+		document.body.addEventListener('ObjectCreated', (e) => {
+			if (e.detail.obj) {
+				this.addObjectToScene(e.detail.obj);
+			}
+		});
+
 		// Disabling default rightclick menu
 		// if (!eventSettings.enableContentMenu) {
 		// 	window.oncontextmenu = () => { 

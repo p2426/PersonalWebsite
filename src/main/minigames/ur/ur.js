@@ -81,30 +81,30 @@ export class TheRoyalGameOfUr extends Minigame {
 
         // Floor
         const textureLoader = new THREE.TextureLoader();
-        const floorMap = textureLoader.load("./textures/ur/Flooring_Stone_001_COLOR.png");
-        const floorAo = textureLoader.load("./textures/ur/Flooring_Stone_001_OCC.png");
-        const floorNormal = textureLoader.load("./textures/ur/Flooring_Stone_001_NRM.png");
-        floorMap.minFilter = THREE.LinearFilter;
-        floorAo.minFilter = THREE.LinearFilter;
-        floorNormal.minFilter = THREE.LinearFilter;
-
-        for (let i = 1; i < 4; i++) {
-            for (let j = 1; j < 4; j++) {
-                let floor = new Cube({
-                    id:         "floor",
-                    scale:      {x: 15, y: 1, z: 15},
-                    position:   {x: j * 15 - 30, y: -.8, z: i * 15 - 30},
-                    colour:     {r: 255, g: 255, b: 255},
-                    material:   new THREE.MeshStandardMaterial({
-                        map: floorMap,
-                        aoMap: floorAo,
-                        normalMap: floorNormal,
-                    })
+        textureLoader.load("./textures/ur/Flooring_Stone_001_COLOR.png" , (floorMap) => {
+            textureLoader.load("./textures/ur/Flooring_Stone_001_OCC.png", (floorAo) => {
+                textureLoader.load("./textures/ur/Flooring_Stone_001_NRM.png", (floorNormal) => {
+                    floorMap.minFilter = THREE.LinearFilter;
+                    floorAo.minFilter = THREE.LinearFilter;
+                    floorNormal.minFilter = THREE.LinearFilter;
+                    for (let i = 1; i < 4; i++) {
+                        for (let j = 1; j < 4; j++) {
+                            let floor = new Cube({
+                                id:         "floor",
+                                scale:      {x: 15, y: 1, z: 15},
+                                position:   {x: j * 15 - 30, y: -.8, z: i * 15 - 30},
+                                colour:     {r: 255, g: 255, b: 255},
+                                material:   new THREE.MeshStandardMaterial({
+                                    map: floorMap,
+                                    aoMap: floorAo,
+                                    normalMap: floorNormal,
+                                })
+                            });
+                        }
+                    }
                 });
-                this.scene.addObjectToScene(floor);
-            }
-        }
-
+            });
+        });
 
         // Lights
         this.pointLight = this.createPointLight();
@@ -112,12 +112,6 @@ export class TheRoyalGameOfUr extends Minigame {
 
         // Set up the board
         this.boardCreator = new BoardCreator(BoardCreator.TYPE.STANDARD);
-        this.boardCreator.getBoardPieces().forEach(piece => {
-            this.scene.addObjectToScene(piece);
-        });
-        this.boardCreator.getGamePieces().forEach(piece => {
-            this.scene.addObjectToScene(piece);
-        });
         
         // Raycastable objects for rays
         this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);

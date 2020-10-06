@@ -54,5 +54,11 @@ export class Cube extends SceneObject {
         this.setId(this.properties.id);
         this.setPosition(this.properties.position.x, this.properties.position.y, this.properties.position.z);
         this.setRotation(this.properties.rotation.x, this.properties.rotation.y, this.properties.rotation.z);
+
+        this.addObjectToScene();
+    }
+
+    getScale() {
+        return {x: this.geometry.parameters.width, y: this.geometry.parameters.height, z: this.geometry.parameters.depth};
     }
 }

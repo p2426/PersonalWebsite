@@ -1,4 +1,6 @@
+import { Callbacks } from 'jquery';
 import * as THREE from 'three';
+import { Cube } from '../../3js classes/cube';
 import { BoardPiece } from './boardpiece';
 import { GamePiece } from './gamepiece';
 
@@ -52,31 +54,128 @@ export class BoardCreator {
 
     constructor(type) {
         this.textureLoader = new THREE.TextureLoader();
-        this.createBoardPieces(type);
+        //this.createBoardPieces(type);
+        this.loadTexs();
         this.createGamePiecesForPlayer(type, 1);
         this.createGamePiecesForPlayer(type, 2);
     }
 
+    // createBoardPieces(type) {
+    //     for (let z = 0; z < this.boardtype[type].boardArea[1]; z++) {
+    //         for (let x = 0; x < this.boardtype[type].boardArea[0]; x++) {
+    //             if ((z === 0 || z === 2) && (x === 4 || x === 5)) continue;
+
+    //             const texture = this.textureLoader.load("./textures/ur/rgu"+ z + "_" + x + ".png");
+    //             texture.minFilter = THREE.LinearFilter;
+
+    //             let boardPiece = new BoardPiece({
+    //                 id:         "boardPiece",
+    //                 scale:      {x: 1, y: .5, z: 1},
+    //                 position:   {x: x, y: 0, z: z},
+    //                 colour:     {r: 255, g: 255, b: 255},
+    //                 material:   new THREE.MeshStandardMaterial({map: texture})
+    //             }, this.boardtype[type].pieceProperties[z === 0 ? z + x : (z + x) + ((this.boardtype[type].boardArea[0] - 1) * z)]);
+
+    //             this.boardPieces.push(boardPiece);
+    //         }
+    //     }
+    //     return this.boardPieces;
+    // }
+
     createBoardPieces(type) {
-        for (let z = 0; z < this.boardtype[type].boardArea[1]; z++) {
-            for (let x = 0; x < this.boardtype[type].boardArea[0]; x++) {
-                if ((z === 0 || z === 2) && (x === 4 || x === 5)) continue;
 
-                const texture = this.textureLoader.load("./textures/ur/rgu"+ z + "_" + x + ".png");
-                texture.minFilter = THREE.LinearFilter;
+        for (let z = 0; z < 7; z++) {
+            for (let x = 0; x < 17; x++) {
+                
+                if ((x === 9 && z === 0 || x === 9 && z === 6) || 
+                    (x === 10 && z === 0 || x === 10 && z === 6) ||
+                    (x === 11 && z === 0 || x === 11 && z === 6)) continue;
 
-                let boardPiece = new BoardPiece({
-                    id:         "boardPiece",
-                    scale:      {x: 1, y: .5, z: 1},
-                    position:   {x: x, y: 0, z: z},
-                    colour:     {r: 255, g: 255, b: 255},
-                    material:   new THREE.MeshStandardMaterial({map: texture})
-                }, this.boardtype[type].pieceProperties[z === 0 ? z + x : (z + x) + ((this.boardtype[type].boardArea[0] - 1) * z)]);
+                this.textureLoader.load(
+                    "./textures/ur/photoreal/originalurtopdown-" + String(x).padStart(2, '0') + "-" + String(z).padStart(2, '0') + ".png",
+                    (tex) => {
+                        tex.minFilter = THREE.LinearFilter;
 
-                this.boardPieces.push(boardPiece);
+                        const scaleX = 1 * (tex.image.width / 100);
+                        const scaleZ = 1 * (tex.image.height / 100);
+
+                        let boardPiece = new Cube({
+                            id:         "cube",
+                            scale:      {x: scaleX, y: .5, z: scaleZ},
+                            position:   {x: x, y: 0, z: z},
+                            colour:     {r: 255, g: 255, b: 255},
+                            material:   new THREE.MeshStandardMaterial({map: tex})
+                        });
+
+                        this.boardPieces.push(boardPiece);
+                        console.log(this.boardPieces);
+                });
             }
         }
-        return this.boardPieces;
+
+        // for (let z = 0; z < this.boardtype[type].boardArea[1]; z++) {
+        //     for (let x = 0; x < this.boardtype[type].boardArea[0]; x++) {
+        //         if ((z === 0 || z === 2) && (x === 4 || x === 5)) continue;
+
+        //         const texture = this.textureLoader.load("./textures/ur/rgu"+ z + "_" + x + ".png");
+        //         texture.minFilter = THREE.LinearFilter;
+
+        //         let boardPiece = new BoardPiece({
+        //             id:         "boardPiece",
+        //             scale:      {x: 1, y: .5, z: 1},
+        //             position:   {x: x, y: 0, z: z},
+        //             colour:     {r: 255, g: 255, b: 255},
+        //             material:   new THREE.MeshStandardMaterial({map: texture})
+        //         }, this.boardtype[type].pieceProperties[z === 0 ? z + x : (z + x) + ((this.boardtype[type].boardArea[0] - 1) * z)]);
+
+        //         this.boardPieces.push(boardPiece);
+        //     }
+        // }
+        // return this.boardPieces;
+    }
+
+    loadTexs() {
+        const xSize = 17;
+        const zSize = 7;
+        let currentX = 0;
+        let currentZ = 0;
+        let textures = [];
+        const textureLoader = new THREE.TextureLoader();
+
+        texPromise(currentX, currentZ);
+
+        function texPromise(x, z) {
+            new Promise((resolve, reject) => {
+
+                if ((x === 9 && z === 0 || x === 9 && z === 6) || 
+                (x === 10 && z === 0 || x === 10 && z === 6) ||
+                (x === 11 && z === 0 || x === 11 && z === 6)) {
+                    reject();
+                } else {
+                    const dir = "./textures/ur/photoreal/originalurtopdown-" + String(x).padStart(2, '0') + "-" + String(z).padStart(2, '0') + ".png"
+                    textureLoader.load(dir, 
+                        (tex) => { resolve(tex) },
+                        undefined,
+                        () => { reject() }
+                    );
+                }
+                
+            }).then((tex) => {
+                textures.push(tex);
+                console.log("finished loading texture:", z, x);
+            }).catch(() => {
+                console.log("lol something failed");
+            }).finally(() => {
+                currentX++;
+                if (currentX == xSize) {
+                    currentX = 0;
+                    currentZ++;
+                }
+                if (currentZ !== zSize) {
+                    texPromise(currentX, currentZ);
+                }
+            });
+        }
     }
 
     getBoardPieces() { return this.boardPieces; }

@@ -8,25 +8,17 @@ export class SceneObject {
 
     }
 
-    getMesh() {
-        return this.mesh;
-    }
+    getMesh() { return this.mesh; }
 
-    getColour() {
-        return this.material.color;
-    }
+    getColour() { return this.material.color; }
 
-    getPosition() {
-        return this.mesh.position;
-    }
+    getPosition() { return this.mesh.position; }
 
-    getRotation() {
-        return this.mesh.rotation;
-    }
+    getRotation() { return this.mesh.rotation; }
 
-    getId() {
-        return this.id;
-    }
+    getScale() { return this.mesh.scale; }
+
+    getId() { return this.id; }
 
     setColour(r, g, b) {
         if (!this.properties.material instanceof Array) {
@@ -83,5 +75,14 @@ export class SceneObject {
 
     removeFromUpdate(functionName) {
         this.updateBehaviour[functionName] = () => {return};
+    }
+
+    addObjectToScene() {
+        const e = new CustomEvent('ObjectCreated', {
+            detail: {
+                obj: this
+            }
+        });
+        document.body.dispatchEvent(e);
     }
 };
