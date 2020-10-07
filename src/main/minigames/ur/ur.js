@@ -20,6 +20,7 @@ export class TheRoyalGameOfUr extends Minigame {
     time = 0;
 
     gamePieceRay = new THREE.Raycaster();
+    readyToRay = false;
 
     cameraLerpTarget = {x: 30, y: 5, z: 10};
     cameraOrbit = false;
@@ -157,6 +158,7 @@ export class TheRoyalGameOfUr extends Minigame {
             // Raycastable objects for rays
             this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);
             this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
+            this.readyToRay = true;
 		});
     }
 
@@ -180,14 +182,14 @@ export class TheRoyalGameOfUr extends Minigame {
                                          MathFunctions.lerp(this.scene.getCameraPosition().y, this.cameraLerpTarget.y, this.deltaTime),
                                          MathFunctions.lerp(this.scene.getCameraPosition().z, this.cameraLerpTarget.z, this.deltaTime));
 
-            this.ray.setFromCamera({ x: Cursor.getNormalisedX(), y: Cursor.getNormalisedY() }, this.scene.camera);
-            this.ray.hits = this.ray.intersectObjects(this.ray.objects, false);
-            this.gamePieceRay.setFromCamera({ x: Cursor.getNormalisedX(), y: Cursor.getNormalisedY() }, this.scene.camera);
-            this.gamePieceRay.hits = this.gamePieceRay.intersectObjects(this.gamePieceRay.objects, false);
+            if (this.readyToRay) {
+                this.ray.setFromCamera({ x: Cursor.getNormalisedX(), y: Cursor.getNormalisedY() }, this.scene.camera);
+                this.ray.hits = this.ray.intersectObjects(this.ray.objects, false);
+                this.gamePieceRay.setFromCamera({ x: Cursor.getNormalisedX(), y: Cursor.getNormalisedY() }, this.scene.camera);
+                this.gamePieceRay.hits = this.gamePieceRay.intersectObjects(this.gamePieceRay.objects, false);
 
-            this.hoveredBoardPiece = this.ray.hits[0]?.object.classRef;
-
-            console.log(this.hoveredBoardPiece);
+                this.hoveredBoardPiece = this.ray.hits[0]?.object.classRef;
+            }
 
             if (this.selectedGamePiece && this.hoveredBoardPiece) {
                 if (this.hoveredBoardPiece.isLegalMove(this.selectedGamePiece.getOwner())) {
