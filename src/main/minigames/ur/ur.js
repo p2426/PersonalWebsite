@@ -21,9 +21,7 @@ export class TheRoyalGameOfUr extends Minigame {
 
     gamePieceRay = new THREE.Raycaster();
 
-    cameraLerpTargetX = 0;
-    cameraLerpTargetY = 8;
-    cameraLerpTargetZ = 8;
+    cameraLerpTarget = {x: 30, y: 5, z: 10};
     cameraOrbit = false;
 
     selectedGamePiece = null;
@@ -32,21 +30,15 @@ export class TheRoyalGameOfUr extends Minigame {
         super();
         super.debug(
             () => {
-                this.cameraLerpTargetX = 0;
-                this.cameraLerpTargetY = 10;
-                this.cameraLerpTargetZ = 10; 
+                this.cameraLerpTarget = {x: 0, y: 10, z: 10};
                 this.scene.setCameraTarget(3.5, 0, 0);
             },
             () => {
-                this.cameraLerpTargetX = 10;
-                this.cameraLerpTargetY = 0;
-                this.cameraLerpTargetZ = 0;
+                this.cameraLerpTarget = {x: 10, y: 0, z: 0};
             },
             () => {
-                this.cameraLerpTargetX = 3.5;
-                this.cameraLerpTargetY = 12;
-                this.cameraLerpTargetZ = 1.1;
-                this.scene.setCameraTarget(3.5, 0, 1);
+                this.cameraLerpTarget = {x: 3.5, y: 15, z: 0};
+                this.scene.setCameraTarget(3.5, 0, -.01);
             },
             () => {
                 this.cameraOrbit = !this.cameraOrbit;
@@ -56,14 +48,14 @@ export class TheRoyalGameOfUr extends Minigame {
     }
     
     createAmbientLight() {
-        let ambientLight = new THREE.AmbientLight(0xffffff, .1);
+        let ambientLight = new THREE.AmbientLight(0xffffff, .2);
         this.scene.scene.add(ambientLight);
         return ambientLight;
     }
 
     createPointLight() {
         let pointLight = new THREE.PointLight(0xfff6db, 1, 20, 2);
-        pointLight.position.set(1, 3, 0);
+        pointLight.position.set(0, 5, 0);
         pointLight.castShadow = true;
         pointLight.shadow.camera.near = .1;
         pointLight.shadow.camera.far = 20;
@@ -75,9 +67,10 @@ export class TheRoyalGameOfUr extends Minigame {
         // Turn off alpha background
         this.scene.renderer.setClearAlpha(1);
 
-        // Camera Target
-        this.scene.setCameraPosition(0, 10, 10);
-        this.scene.setCameraTarget(3.5, 0, 0);
+        // Camera setup
+        this.scene.setCameraPosition(this.cameraLerpTarget.x, this.cameraLerpTarget.y, this.cameraLerpTarget.z);
+        this.scene.setCameraTarget(3.5, 0, 1);
+        this.cameraLerpTarget = {x: 0, y: 10, z: 10};
 
         // Floor
         const textureLoader = new THREE.TextureLoader();
@@ -87,8 +80,8 @@ export class TheRoyalGameOfUr extends Minigame {
                     floorMap.minFilter = THREE.LinearFilter;
                     floorAo.minFilter = THREE.LinearFilter;
                     floorNormal.minFilter = THREE.LinearFilter;
-                    for (let i = 1; i < 4; i++) {
-                        for (let j = 1; j < 4; j++) {
+                    for (let i = 1; i < 5; i++) {
+                        for (let j = 1; j < 5; j++) {
                             let floor = new Cube({
                                 id:         "floor",
                                 scale:      {x: 15, y: 1, z: 15},
@@ -112,10 +105,6 @@ export class TheRoyalGameOfUr extends Minigame {
 
         // Set up the board
         this.boardCreator = new BoardCreator(BoardCreator.TYPE.STANDARD);
-        
-        // Raycastable objects for rays
-        this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);
-        this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
 
         // Events
         document.body.addEventListener('mousedown', () => {
@@ -163,6 +152,12 @@ export class TheRoyalGameOfUr extends Minigame {
                 }
             }
         });
+
+		document.body.addEventListener('AllObjectsCreated', (e) => {
+            // Raycastable objects for rays
+            this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);
+            this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
+		});
     }
 
     update() {
@@ -181,9 +176,9 @@ export class TheRoyalGameOfUr extends Minigame {
             TheRoyalGameOfUr.deltaTime = this.deltaTime;
             // ************************************** //
 
-            this.scene.setCameraPosition(MathFunctions.lerp(this.scene.getCameraPosition().x, this.cameraLerpTargetX, this.deltaTime),
-                                         MathFunctions.lerp(this.scene.getCameraPosition().y, this.cameraLerpTargetY, this.deltaTime),
-                                         MathFunctions.lerp(this.scene.getCameraPosition().z, this.cameraLerpTargetZ, this.deltaTime));
+            this.scene.setCameraPosition(MathFunctions.lerp(this.scene.getCameraPosition().x, this.cameraLerpTarget.x, this.deltaTime),
+                                         MathFunctions.lerp(this.scene.getCameraPosition().y, this.cameraLerpTarget.y, this.deltaTime),
+                                         MathFunctions.lerp(this.scene.getCameraPosition().z, this.cameraLerpTarget.z, this.deltaTime));
 
             this.ray.setFromCamera({ x: Cursor.getNormalisedX(), y: Cursor.getNormalisedY() }, this.scene.camera);
             this.ray.hits = this.ray.intersectObjects(this.ray.objects, false);
@@ -191,6 +186,8 @@ export class TheRoyalGameOfUr extends Minigame {
             this.gamePieceRay.hits = this.gamePieceRay.intersectObjects(this.gamePieceRay.objects, false);
 
             this.hoveredBoardPiece = this.ray.hits[0]?.object.classRef;
+
+            console.log(this.hoveredBoardPiece);
 
             if (this.selectedGamePiece && this.hoveredBoardPiece) {
                 if (this.hoveredBoardPiece.isLegalMove(this.selectedGamePiece.getOwner())) {
