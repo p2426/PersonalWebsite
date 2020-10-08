@@ -159,7 +159,7 @@ export class TheRoyalGameOfUr extends Minigame {
             this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);
             this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
             this.readyToRay = true;
-		});
+        });
     }
 
     update() {

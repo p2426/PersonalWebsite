@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import { MathFunctions } from '../../mathfunctions';
 import { Sphere } from '../../3js classes/sphere';
 import { TheRoyalGameOfUr } from './ur';
+import { OBJObject } from '../../3js classes/objobject';
 
-export class GamePiece extends Sphere {
+export class GamePiece extends OBJObject {
 
     game;
 
@@ -14,14 +15,12 @@ export class GamePiece extends Sphere {
     lerpPos = {x: 0, y: 0, z: 0};
     lerpSpeed = 6;
 
-    properties = {
-        update: this.update.bind(this)
+    constructor(settings) {
+        super(settings);
     }
 
-    constructor(settings, owner) {
-        super(settings);
-        this.setOwner(owner);
-
+    start() {
+        this.setOwner(this.properties.owner);
         this.initialPosition = new THREE.Vector3().copy(this.getPosition());
         this.startPosition = this.initialPosition;
         this.setLerpPosition(this.initialPosition);

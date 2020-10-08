@@ -1,67 +1,77 @@
 import * as THREE from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { SceneObject } from './sceneobject';
 
-export class OBJObject {
+export class OBJObject extends SceneObject {
 
-    constructor(scene = undefined, materialPath = undefined, objectPath = undefined, 
-        id = "unset", position = {x: 0, y: 0, z: 0}, rotation = {x: 0, y: 0, z: 0},
-        scale = {x: 1, y: 1, z: 1}, update = () => {}) {
-        
-        this.update = update;
+    properties = {
+        id: "unset",
+        objectPath: "",
+        texturePath: "",
+        scale: {x: 1, y: 1, z: 1},
+        position: {x: 0, y: 0, z: 0},
+        rotation: {x: 0, y: 0, z: 0},
+        update: this.update.bind(this),
+    }
 
-        // load texture
-        var mtlLoader = new MTLLoader();
-        mtlLoader.setMaterialOptions({ side: THREE.FrontSide })
-        mtlLoader.load(materialPath, (materials) => {
-            materials.preload();
+    constructor(settings) {
+        super();
 
-            // load model
-            var objLoader = new OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.load(objectPath, (object) => {
+        if (settings) { 
+            Object.keys(settings).map(x => this.properties[x] = settings[x]);
+        }
 
-                this.mesh = object;
-                scene.addObjectToScene(this);
+        console.log("objobject: ", this.properties);
 
-                this.setId(id);
-                this.setScale(scale.x, scale.y, scale.z);
-                this.setPosition(position.x, position.y, position.z);
-                this.setRotation(rotation.x, rotation.y, rotation.z);
-                    
-            }, (xhr) => {
-                console.log('Model: ' + (xhr.loaded / xhr.total * 100 ) + '% loaded');
-            }, (error) => {
-                console.log("Could not load the model");
+        // Load Model
+        var objLoader = new OBJLoader();
+        objLoader.load(this.properties.objectPath, (object) => {
+
+            object.traverse((child) => {
+                if (child instanceof THREE.Mesh) {
+                    this.mesh = child;
+                    this.mesh.geometry.computeVertexNormals(true);
+                    this.mesh.geometry.computeFaceNormals(true);
+                    this.mesh.receiveShadow = true;
+                    this.mesh.castShadow = true;
+                    // Give mesh a reference to this class for ease of Raycasting
+                    this.mesh.classRef = this;
+                }
             });
+
+            // Load Texture
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load(this.properties.texturePath, (texture) => {
+                texture.minFilter = THREE.LinearFilter;
+                const material = new THREE.MeshPhongMaterial({ map: texture });
+                this.mesh.material = material;
+            });
+
+            this.addObjectToScene();
+
+            this.setId(this.properties.id);
+            this.setScale(this.properties.scale.x, this.properties.scale.y, this.properties.scale.z);
+            this.setPosition(this.properties.position.x, this.properties.position.y, this.properties.position.z);
+            this.setRotation(this.properties.rotation.x, this.properties.rotation.y, this.properties.rotation.z);
+
+            this.start();
+                
         }, (xhr) => {
-            console.log('Textures: ' + (xhr.loaded / xhr.total * 100 ) + '% loaded');
+            
         }, (error) => {
-            console.log("Could not load the textures");
+            
         });
-
-        console.log(this);
     }
 
-    setRotation(x, y, z) {
-        this.mesh.rotation.x = x;
-        this.mesh.rotation.y = y;
-        this.mesh.rotation.z = z;
-    }
+    // To be called by extensions after the OBJ has been loaded in constructor
+    start() {}
 
-    setScale(x, y, z) {
-        this.mesh.scale.x = x;
-        this.mesh.scale.y = y;
-        this.mesh.scale.z = z;
+    addObjectToScene() {
+        const e = new CustomEvent('ObjectCreated', {
+            detail: {
+                obj: this
+            }
+        });
+        document.body.dispatchEvent(e);
     }
-
-    setPosition(x, y, z) {
-        this.mesh.position.set(x, y, z);
-    }
-
-    setId(string) {
-        this.id = string;
-    }
-
-    getMesh() { return this.mesh }
 }

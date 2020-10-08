@@ -141,10 +141,12 @@ export class BoardCreator {
         for (let i = 0; i < this.boardtype[type].gamePieceCount; i++) {
             const gamePiece = new GamePiece({
                 id:         "gamePiece",
-                scale:      {x: .8, y: .2, z: .8},
+                objectPath: "./models/ur/gamepiece.obj",
+                texturePath: "./textures/ur/photoreal/gamepiece-" + player + "-" + i + ".png",
+                scale:      {x: .45, y: .2, z: .45},
                 position:   player === 1 ? {x: i - 2, y: -.25, z: 4} : {x: i - 2, y: -.25, z: -3},
-                material:   new THREE.MeshStandardMaterial({color: player === 1 ? 0x919191 : 0xeddec7 }),
-            }, player);
+                owner: player
+            });
             this.gamePieces.push(gamePiece);
         }
     }
