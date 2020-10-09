@@ -6,6 +6,8 @@ import { Minigame } from '../minigame';
 import { Scene } from '../../3js classes/scene';
 import { BoardCreator } from './boardcreator';
 import { Cube } from '../../3js classes/cube';
+import { GLTFObject } from '../../3js classes/gltfobject';
+import { Dice } from './dice';
 
 export class TheRoyalGameOfUr extends Minigame {
     
@@ -160,6 +162,14 @@ export class TheRoyalGameOfUr extends Minigame {
             this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
             this.readyToRay = true;
         });
+
+        // GLB/GLTF TEST
+        const aDice = new Dice({
+            gltfPath: "./models/ur/untitled.gltf",
+            scale: {x: .5, y: .5, z: .5},
+            position: {x: 0, y: 1, z: 4}
+        });
+        console.log(aDice);
     }
 
     update() {

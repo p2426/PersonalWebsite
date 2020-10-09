@@ -143,7 +143,7 @@ export class BoardCreator {
                 id:         "gamePiece",
                 objectPath: "./models/ur/gamepiece.obj",
                 texturePath: "./textures/ur/photoreal/gamepiece-" + player + "-" + i + ".png",
-                scale:      {x: .45, y: .2, z: .45},
+                scale:      {x: .4, y: .2, z: .4},
                 position:   player === 1 ? {x: i - 2, y: -.25, z: 4} : {x: i - 2, y: -.25, z: -3},
                 owner: player
             });
