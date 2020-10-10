@@ -169,7 +169,6 @@ export class TheRoyalGameOfUr extends Minigame {
             scale: {x: .5, y: .5, z: .5},
             position: {x: 0, y: 1, z: 4}
         });
-        console.log(aDice);
     }
 
     update() {

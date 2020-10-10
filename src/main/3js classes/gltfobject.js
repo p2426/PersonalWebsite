@@ -23,12 +23,10 @@ export class GLTFObject extends SceneObject {
 
         // Load Model
         const gltfLoader = new GLTFLoader();
-        gltfLoader.load(this.properties.gltfPath, (object) => {
-            
-            console.log(object);
+        gltfLoader.load(this.properties.gltfPath, (gltf) => {
 
             // Mesh
-            this.mesh = object.scene.children[0];
+            this.mesh = gltf.scene.children[0];
             this.mesh.geometry.computeVertexNormals(true);
             this.mesh.geometry.computeFaceNormals(true);
             this.mesh.receiveShadow = true;
@@ -40,6 +38,9 @@ export class GLTFObject extends SceneObject {
             const material = new THREE.MeshPhongMaterial();
             this.mesh.material = material;
 
+            // Animations
+            this.mesh.animations = gltf.animations;
+
             console.log(this.mesh);
             this.addObjectToScene();
             
@@ -47,6 +48,8 @@ export class GLTFObject extends SceneObject {
             this.setScale(this.properties.scale.x, this.properties.scale.y, this.properties.scale.z);
             this.setPosition(this.properties.position.x, this.properties.position.y, this.properties.position.z);
             this.setRotation(this.properties.rotation.x, this.properties.rotation.y, this.properties.rotation.z);
+
+            this.start();
                 
         }, (xhr) => {
             
