@@ -8,6 +8,7 @@ export class GLTFObject extends SceneObject {
     properties = {
         id: "unset",
         gltfPath: "",
+        gltfChildName: "",
         scale: {x: 1, y: 1, z: 1},
         position: {x: 0, y: 0, z: 0},
         rotation: {x: 0, y: 0, z: 0},
@@ -26,7 +27,7 @@ export class GLTFObject extends SceneObject {
         gltfLoader.load(this.properties.gltfPath, (gltf) => {
 
             // Mesh
-            this.mesh = gltf.scene.children[0];
+            this.mesh = gltf.scene.children.filter(o => o.name === this.properties.gltfChildName)[0];
             this.mesh.geometry.computeVertexNormals(true);
             this.mesh.geometry.computeFaceNormals(true);
             this.mesh.receiveShadow = true;
@@ -35,13 +36,13 @@ export class GLTFObject extends SceneObject {
             this.mesh.classRef = this;
 
             // Material
-            const material = new THREE.MeshPhongMaterial();
+            const map = this.mesh.material.map;
+            const material = new THREE.MeshPhongMaterial({map: map});
             this.mesh.material = material;
 
             // Animations
-            this.mesh.animations = gltf.animations;
+            this.animations = gltf.animations.filter(a => a.name.includes(this.properties.gltfChildName));
 
-            console.log(this.mesh);
             this.addObjectToScene();
             
             this.setId(this.properties.id);

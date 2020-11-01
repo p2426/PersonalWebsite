@@ -8,6 +8,7 @@ import { BoardCreator } from './boardcreator';
 import { Cube } from '../../3js classes/cube';
 import { GLTFObject } from '../../3js classes/gltfobject';
 import { Dice } from './dice';
+import { TheRoyalGameOfUrUI } from './ui/ur-ui';
 
 export class TheRoyalGameOfUr extends Minigame {
     
@@ -17,6 +18,7 @@ export class TheRoyalGameOfUr extends Minigame {
     logicFPS = TheRoyalGameOfUrSettings.LogicFPS;
     sceneSettings = TheRoyalGameOfUrSettings.sceneSettings;
     cameraSettings = TheRoyalGameOfUrSettings.cameraSettings;
+    ui;
 
     scene = new Scene(this.renderFPS, this.sceneSettings, this.cameraSettings);
     time = 0;
@@ -29,22 +31,26 @@ export class TheRoyalGameOfUr extends Minigame {
 
     selectedGamePiece = null;
 
+    diceGroups = {};
+
     constructor() {
         super();
         super.debug(
             () => {
-                this.cameraLerpTarget = {x: 0, y: 10, z: 10};
-                this.scene.setCameraTarget(3.5, 0, 0);
+                this.cameraLerpTarget = {x: -5, y: 10, z: 10};
+                this.scene.setCameraTarget(-5, 0, 0);
             },
             () => {
-                this.cameraLerpTarget = {x: 10, y: 0, z: 0};
+                this.cameraLerpTarget = {x: -10, y: 0, z: 0};
             },
             () => {
-                this.cameraLerpTarget = {x: 3.5, y: 15, z: 0};
-                this.scene.setCameraTarget(3.5, 0, -.01);
+                this.cameraLerpTarget = {x: 1.5, y: 15, z: 0};
+                this.scene.setCameraTarget(1.5, 0, -.01);
             },
             () => {
-                this.cameraOrbit = !this.cameraOrbit;
+                const num = MathFunctions.randomRange(0, 4);
+                console.log(num);
+                this.rollTheDice(num, 0);
             },
         );
         this.scene.resetSceneDimensions();
@@ -67,6 +73,9 @@ export class TheRoyalGameOfUr extends Minigame {
     }
 
     start() {
+        // UI
+        this.ui = new TheRoyalGameOfUrUI(this.ingameUI, this);
+
         // Turn off alpha background
         this.scene.renderer.setClearAlpha(1);
 
@@ -114,7 +123,7 @@ export class TheRoyalGameOfUr extends Minigame {
             this.initialBoardPiece = null;
             this.lastLegalBoardPiece = null;
 
-            if (this.gamePieceRay.hits[0]) {
+            if (this.gamePieceRay?.hits[0]) {
                 this.selectedGamePiece = this.gamePieceRay.hits[0].object.classRef;
                 this.selectedGamePiece.setStartPosition(new THREE.Vector3().copy(this.selectedGamePiece.getPosition()));
                 if (this.hoveredBoardPiece) {
@@ -163,11 +172,36 @@ export class TheRoyalGameOfUr extends Minigame {
             this.readyToRay = true;
         });
 
-        // GLB/GLTF TEST
-        const aDice = new Dice({
-            gltfPath: "./models/ur/untitled.gltf",
-            scale: {x: .5, y: .5, z: .5},
-            position: {x: 0, y: 1, z: 4}
+        // GLTF Dice Groups
+        this.createDiceGroups();
+    }
+
+    createDiceGroup(num, variation) {
+        let diceGroup = [];
+        for (let i = 0; i < 4; i++) {
+            diceGroup.push(
+                new Dice({
+                    gltfPath: `./models/ur/dice-${num}-${variation}.gltf`,
+                    gltfChildName: "Dice-" + i,
+                    scale: {x: .35, y: .35, z: .35},
+                    position: {x: 0, y: 10, z: 4},
+                })
+            );
+        }
+        this.diceGroups[`${num}-${variation}`] = diceGroup;
+    }
+
+    createDiceGroups() {
+        for (let i = 0; i < 5; i++) {
+            this.createDiceGroup(i, 0);
+        }
+    }
+
+    rollTheDice(num, variation) {
+        this.diceGroups[`${num}-${variation}`].forEach(dice => {
+            dice.rollTheDice(() => {
+                console.log("animation finished");
+            });
         });
     }
 

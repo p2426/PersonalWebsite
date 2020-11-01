@@ -12,6 +12,8 @@ export class Minigame {
     logicFPS;
     ray = new THREE.Raycaster();
 
+    ingameUI;
+
     constructor() {
         this.init();
     }
@@ -24,6 +26,7 @@ export class Minigame {
             document.getElementById('entryContainer').classList.add(CSSClasses.noDisplay);
             document.getElementById('home').classList.remove(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
             document.body.classList.remove(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
+            this.ingameUI = document.getElementById("ingameContainer");
             this.start();
 
             // Setup logic loop
