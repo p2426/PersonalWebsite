@@ -27,6 +27,7 @@ export class Minigame {
             document.getElementById('home').classList.remove(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
             document.body.classList.remove(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
             this.ingameUI = document.getElementById("ingameContainer");
+            this.ingameUI.classList.remove(CSSClasses.noDisplay);
             this.start();
 
             // Setup logic loop

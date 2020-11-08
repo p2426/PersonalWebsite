@@ -25,7 +25,7 @@ export class Events {
     }
 
     // -- UI
-    // Home button - reload, as only 1 3JS scene can be open at a time, GC will collect memory
+    // Home button - reload, GC will collect memory
     static homeClick() { window.location.reload(); }
 
     // -- Minigames

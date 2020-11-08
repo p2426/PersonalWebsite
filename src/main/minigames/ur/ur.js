@@ -118,6 +118,9 @@ export class TheRoyalGameOfUr extends Minigame {
         // Set up the board
         this.boardCreator = new BoardCreator(BoardCreator.TYPE.STANDARD);
 
+        // Dice
+        this.createDiceGroups();
+
         // Events
         document.body.addEventListener('mousedown', () => {
             this.initialBoardPiece = null;
@@ -171,9 +174,6 @@ export class TheRoyalGameOfUr extends Minigame {
             this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
             this.readyToRay = true;
         });
-
-        // GLTF Dice Groups
-        this.createDiceGroups();
     }
 
     createDiceGroup(num, variation) {

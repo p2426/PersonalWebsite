@@ -9,13 +9,12 @@ export class TheRoyalGameOfUrUI {
 
     createElements() {
         const elements = [];
-        const buttonSettings = {
+        this.rollTheDiceButton = new RollTheDiceButton({
             node: document.createElement('button'),
             textContent: "Roll the dice",
             classes: [],
             click: this.game.rollTheDice.bind(this.game),
-        }
-        this.rollTheDiceButton = new RollTheDiceButton(buttonSettings);
+        });
 
         elements.push(this.rollTheDiceButton.element);
         elements.forEach(element => {
