@@ -44,8 +44,8 @@ export class TheRoyalGameOfUr extends Minigame {
                 this.cameraLerpTarget = {x: -10, y: 0, z: 0};
             },
             () => {
-                this.cameraLerpTarget = {x: 1.5, y: 15, z: 0};
-                this.scene.setCameraTarget(1.5, 0, -.01);
+                this.cameraLerpTarget = {x: 10, y: 20, z: 0};
+                this.scene.setCameraTarget(10, 0, -.01);
             },
             () => {
                 const num = MathFunctions.randomRange(0, 4);

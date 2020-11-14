@@ -1,67 +1,117 @@
+// SVG tag only really used for titles..
+svg {
+    width: 800px;
+    height: 200px;
+}
+
 .entry {
     &__container {
-        height: 100vh;
         display: flex;
+        flex-direction: column;
+        height: 100vh;
 
         transition: opacity .3s;
     }
 
     &__header {
-        height: 200px;
+        position: relative;
+        box-sizing: border-box;
+        border: solid white;
+        border-width: 1px 2px;
+        max-height: 200px;
         width: 100%;
-        background-color: black;
+
+        transition: max-height .3s, background-image .3s;
 
         &:hover {
             & > .entry__header-cut {
                 border-left: 150px solid transparent;
             }
+            & > .entry__header-controller {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            & > svg {
+                background: linear-gradient(90deg, rgba(255,255,255,0.15) 1%, rgba(255,255,255,.005) 100%);
+            }
+        }
+
+        &-title {
+            fill: rgba(255, 255, 255, .9);
+            stroke: black;
+            stroke-width: 1px;
+            stroke-linejoin: round;
+            font-size: 22px;
+            font-weight: 700;
         }
 
         &-cut {
             width: 0;
             height: 0;
-            border-bottom: 200px solid white;
+            border-top: 150px solid white;
             border-left: 0px solid transparent;
+            top: 0;
             right: 0;
             position: absolute;
 
             transition: border-left .3s ease-out;
         }
+
+        &-controller {
+            position: absolute;
+            right: 0;
+            top: 10px;
+            margin: .8rem;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            pointer-events: none;
+            opacity: 0;
+
+            transition: opacity .3s cubic-bezier(.27,.34,.44,.92);
+        }
+
+        &--open { 
+            max-height: 700px;
+
+            & > .entry__body {
+                pointer-events: auto;
+                opacity: 1;
+            }
+
+            & > svg {
+                background: none !important;
+            }
+        }
+
+        // Item specific
+        &--ur {
+            background-image: url('./images/ur-splash.png');
+            background-position-x: center;
+            background-size: cover;
+            background-position-y: center;
+
+            &--open {
+                background-image: url('./images/ur-ziggurat.png');
+                background-position-x: center;
+                background-size: cover;
+                background-position-y: top;
+            }
+        }
     }
 
-    &__read-more {
+    &__body {
+        pointer-events: none;
+        box-sizing: border-box;
+        overflow: auto;
 
+        height: 460px;
+        margin: 0 10% 2rem 10%;
+        padding: 1rem;
+        background-color: rgba(255, 255, 255, .9);
+        opacity: 0;
+
+        transition: opacity 1s;
     }
-
-    // &__header {
-    //     display: flex;
-    //     flex-direction: column;
-    //     padding: 0 1rem;
-    //     cursor: default;
-
-    //     & > h1 {
-    //         text-align: center;
-    //         margin-bottom: 1rem;
-    //     }
-
-    //     & > button {
-    //         cursor: pointer;
-    //         font-size: 1rem;
-    //         outline: none;
-    //         background-color: transparent;
-    //         border: 0;
-    //         padding: 0;
-    //         height: 0;
-    //         transition: height .3s, opacity .2s, padding .3s;
-    //         opacity: 0;
-    //     }
-
-    //     &:hover {
-    //         & > button {
-    //             opacity: 1;
-    //             height: 28px;
-    //             padding: 5px 0;
-    //         }
-    //     }
-    // }
 }
