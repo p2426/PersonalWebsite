@@ -5,7 +5,6 @@ export class Events {
 
     static buttonIDs = ['home'];
     static minigameIDs = ['minigameUr'];
-    static themakingofIDs = ['themakingofUr'];
     static entryController = '.entry__header-controller';
 
     // For nodes: uses element id to attach a function name of the same id + capital eventType
@@ -28,7 +27,7 @@ export class Events {
     }
 
     static attachUIClickEvents() {
-        Events.attachEvents(Events.buttonIDs.concat(Events.minigameIDs).concat(Events.themakingofIDs), 'click');
+        Events.attachEvents(Events.buttonIDs.concat(Events.minigameIDs), 'click');
     }
 
     // -- UI
@@ -46,9 +45,6 @@ export class Events {
 
     // -- Minigames
     static minigameUrClick() { new TheRoyalGameOfUr(); }
-
-    // -- The making of
-    static themakingofUrClick() { console.log('Start the making of ur'); }
 
     // -- Cursor
     static attachCursorEvents() {
