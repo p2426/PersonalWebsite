@@ -3,7 +3,7 @@ export class Component {
     static instances = {};
     static initDataAttribute = "";
 
-    events = ["click", "mousemove", "change", "keypress", "resize"];
+    events = ["click", "mousemove", "change", "keypress", "resize", "wheel"];
 
     element;
 

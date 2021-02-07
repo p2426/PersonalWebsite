@@ -52,6 +52,10 @@ export class Carousel extends Component {
         this.updatePanels();
     }
 
+    wheel(e) {
+        e.deltaY < 0 ? this.nextPanel() : this.previousPanel();
+    }
+
     get panelContainer() {
         return this.scope.querySelector('.carousel');
     }

@@ -20,14 +20,4 @@ export class Debugger extends Component {
         const carousel = Component.get("main_carousel");
         carousel.addPanel();
     }
-
-    2() {
-        const carousel = Component.get("main_carousel");
-        carousel.previousPanel();
-    }
-
-    3() {
-        const carousel = Component.get("main_carousel");
-        carousel.nextPanel();
-    }
 }
