@@ -25,7 +25,7 @@ import { Cursor } from './cursor';
 document.addEventListener("DOMContentLoaded", () => {
     Cursor.init();
     Events.attachCursorEvents();
-    //Events.attachUIClickEvents();
+    Events.attachUIClickEvents();
 
     // -- UI Components
     Carousel.init();

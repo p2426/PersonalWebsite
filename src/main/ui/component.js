@@ -3,7 +3,7 @@ export class Component {
     static instances = {};
     static initDataAttribute = "";
 
-    events = ["click", "mousemove", "change", "keypress", "resize", "wheel"];
+    events = ["click", "mousemove", "change", "keypress", "keydown", "resize", "wheel"];
 
     element;
 
@@ -30,6 +30,9 @@ export class Component {
                 let target;
                 switch(eventName) {
                     case "keypress":
+                        target = document;
+                        break;
+                    case "keydown":
                         target = document;
                         break;
                     case "resize":

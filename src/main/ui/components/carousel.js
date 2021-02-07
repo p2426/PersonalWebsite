@@ -6,6 +6,7 @@ export class Carousel extends Component {
     static initDataAttribute = "carousel";
 
     scope = this.element;
+    panelIndex = 0;
 
     carouselOptions = {
         perspective: {
@@ -15,7 +16,6 @@ export class Carousel extends Component {
     }
 
     panelContainerOptions = {
-        panelIndex: 0,
         heightOffset: {
             amount: 0
         }
@@ -56,6 +56,19 @@ export class Carousel extends Component {
         e.deltaY < 0 ? this.nextPanel() : this.previousPanel();
     }
 
+    keydown(e) {
+        switch(e.key) {
+            case "ArrowLeft":
+                this.previousPanel();
+                break;
+            case "ArrowRight":
+                this.nextPanel();
+                break;
+            default:
+                break;
+        }
+    }
+
     get panelContainer() {
         return this.scope.querySelector('.carousel');
     }
@@ -73,16 +86,16 @@ export class Carousel extends Component {
     }
 
     setPanelIndex(i) {
-        this.panelContainerOptions.panelIndex = i;
+        this.panelIndex = i;
         this.updatePanels();
     }
 
     nextPanel() {
-        this.setPanelIndex(this.panelContainerOptions.panelIndex += 1);
+        this.setPanelIndex(this.panelIndex += 1);
     }
 
     previousPanel() {
-        this.setPanelIndex(this.panelContainerOptions.panelIndex -= 1);
+        this.setPanelIndex(this.panelIndex -= 1);
     }
 
     addPanel() {
@@ -92,7 +105,7 @@ export class Carousel extends Component {
 
     updatePanels() {
         this.adjustPanelContainer();
-        this.applypanelOptions();
+        this.applyPanelOptions();
         this.applyPanelTransforms();
     }
 
@@ -102,7 +115,7 @@ export class Carousel extends Component {
         panelContainer.style.height = (this.panelOptions.height.amount + this.panelContainerOptions.heightOffset.amount) + this.panelOptions.height.unit;
     }
 
-    applypanelOptions() {
+    applyPanelOptions() {
         const panels = this.panels;
         panels.forEach((panel, i) => {
             panel.style.width = (this.panelOptions.spacing.enabled ? this.panelOptions.width.amount - this.panelOptions.spacing.amount : this.panelOptions.width.amount) + this.panelOptions.width.unit;
@@ -118,7 +131,7 @@ export class Carousel extends Component {
             panel.style.transform = `rotateY(${rotY}deg) translateZ(${translateZ + this.panelOptions.width.unit})`;
         });
 
-        this.panelContainer.style.transform = `translateZ(${MathFunctions.invert(translateZ) + this.panelOptions.width.unit}) rotateY(${(this.panelContainerOptions.panelIndex / panels.length) * -360}deg) `;
+        this.panelContainer.style.transform = `translateZ(${MathFunctions.invert(translateZ) + this.panelOptions.width.unit}) rotateY(${(this.panelIndex / panels.length) * -360}deg) `;
     }
 
     calcPanelYRotation(panelsLength, i) {

@@ -5,7 +5,6 @@
     transition: transform, 1s;
 
     &__container {
-        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -17,5 +16,6 @@
     &__panel {
         position: absolute;
         box-sizing: border-box;
+        transition: opacity, 1s;
     }
 }
