@@ -61,11 +61,11 @@ export class Carousel extends Component {
     }
 
     get panels() {
-        return Array.from(this.scope.querySelectorAll('.carousel__cell'));
+        return Array.from(this.scope.querySelectorAll('.carousel__panel'));
     }
 
     get panelTemplate() {
-        return `<div class="carousel__cell">${this.panels.length + 1}</div>`;
+        return `<div class="carousel__panel">${this.panels.length + 1}</div>`;
     }
 
     setPerspective(amount = this.carouselOptions.perspective.amount, unit = this.carouselOptions.perspective.unit) {
