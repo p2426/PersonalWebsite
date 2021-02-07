@@ -6,6 +6,8 @@ import { UIFunctions } from './uifunctions';
 import { MathFunctions } from './mathfunctions';
 
 // UI
+import { Carousel } from './ui/components/carousel';
+import { Debugger } from './ui/components/debugger';
 
 // 3JS Classes
 import { Scene } from './3js classes/scene';
@@ -23,7 +25,11 @@ import { Cursor } from './cursor';
 document.addEventListener("DOMContentLoaded", () => {
     Cursor.init();
     Events.attachCursorEvents();
-    Events.attachUIClickEvents();
+    //Events.attachUIClickEvents();
+
+    // -- UI Components
+    Carousel.init();
+    Debugger.init();
 
     // // Textures
     // const textureLoader = new THREE.TextureLoader();

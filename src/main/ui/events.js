@@ -11,7 +11,7 @@ export class Events {
     static attachEvents(ids, eventType) {
         const capitalEventType = eventType[0].toUpperCase() + eventType.substr(1);
         ids.forEach(id => {
-            document.getElementById(id).addEventListener(eventType, 
+            document.getElementById(id)?.addEventListener(eventType, 
             Events[id + capitalEventType] instanceof Function 
             ? 
             Events[id + capitalEventType] 

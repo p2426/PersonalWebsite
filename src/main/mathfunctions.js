@@ -14,4 +14,12 @@ export class MathFunctions {
     static randomRangeFloat(min, max) {
         return Math.random() * (max - min) + min;
     }
+
+    static getTanFromDegrees(degrees) {
+        return Math.tan(degrees * Math.PI / 180);
+    }
+
+    static invert(v) {
+        return v - (v * 2);
+    }
 }
