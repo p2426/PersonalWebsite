@@ -55,7 +55,7 @@ export class Carousel extends Component {
     wheel(e) {
         // don't rotate the Carousel when we are over a scrollable DIV on the surface of a panel
         const scrollableDiv = e.path.find(el => el.nodeName.toLowerCase() === "div");
-        if (scrollableDiv.offsetHeight < scrollableDiv.scrollHeight) {
+        if (scrollableDiv.offsetHeight < scrollableDiv.scrollHeight && !Array.from(scrollableDiv.classList).includes("carousel__container")) {
             return;
         }
 
@@ -105,7 +105,9 @@ export class Carousel extends Component {
     }
 
     addPanel() {
-        this.panelContainer.appendChild(this.createElementFrom(this.panelTemplate));
+        const newPanel = this.createElementFrom(this.panelTemplate);
+        newPanel.style.border = `5px solid rgb(${MathFunctions.randomRange(0, 255)}, ${MathFunctions.randomRange(0, 255)}, ${MathFunctions.randomRange(0, 255)})`;
+        this.panelContainer.appendChild(newPanel);
         this.updatePanels();
     }
 

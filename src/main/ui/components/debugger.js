@@ -4,10 +4,6 @@ export class Debugger extends Component {
 
     static initDataAttribute = "debugger";
 
-    constructor(node) {
-        super(node);
-    }
-
     keypress(e) {
         if (this.element.checked) {
             if (this[e.key] instanceof Function) {

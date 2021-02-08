@@ -7,6 +7,7 @@ import { MathFunctions } from './mathfunctions';
 
 // UI
 import { Carousel } from './ui/components/carousel';
+import { Scroller } from './ui/components/scroller';
 import { Debugger } from './ui/components/debugger';
 
 // 3JS Classes
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // -- UI Components
     Carousel.init();
+    Scroller.init();
     Debugger.init();
 
     // // Textures
