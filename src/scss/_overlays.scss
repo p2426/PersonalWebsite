@@ -1,0 +1,20 @@
+.overlay {
+
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 0 4vh #1b1b1b;
+
+    &__carousel {
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        height: 100vh;
+    }
+}

@@ -6,6 +6,7 @@ import { UIFunctions } from './uifunctions';
 import { MathFunctions } from './mathfunctions';
 
 // UI
+import { Component } from './ui/component';
 import { Carousel } from './ui/components/carousel';
 import { Scroller } from './ui/components/scroller';
 import { Debugger } from './ui/components/debugger';
@@ -32,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
     Carousel.init();
     Scroller.init();
     Debugger.init();
+    console.log("== Initialised Components ==");
+    console.log(Component.instances);
 
     // // Textures
     // const textureLoader = new THREE.TextureLoader();

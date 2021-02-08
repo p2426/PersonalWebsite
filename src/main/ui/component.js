@@ -12,7 +12,6 @@ export class Component {
         instances.forEach(i => {
             this.instances[i.getAttribute(`data-${this.initDataAttribute}`)] = new this(i);
         });
-        console.log(this.instances);
     }
 
     static get(instanceName) {

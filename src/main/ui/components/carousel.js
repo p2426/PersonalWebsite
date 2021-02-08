@@ -7,6 +7,7 @@ export class Carousel extends Component {
 
     scope = this.element;
     panelIndex = 0;
+    panelOrientationIndex = 0;
 
     carouselOptions = {
         perspective: {
@@ -32,7 +33,7 @@ export class Carousel extends Component {
         },
         spacing: {
             enabled: true,
-            amount: 10,
+            amount: 0,
         },
     };
 
@@ -91,17 +92,30 @@ export class Carousel extends Component {
         this.element.style.perspective = amount + unit;
     }
 
-    setPanelIndex(i) {
+    calcPanelIndex(i) {
+        const panelsLength = this.panels.length;
         this.panelIndex = i;
-        this.updatePanels();
+        if (this.panelIndex < 0) {
+            this.panelIndex = panelsLength + this.panelIndex;
+            this.calcPanelIndex(this.panelIndex);
+        }
+        if (this.panelIndex > (panelsLength - 1)) {
+            this.panelIndex = this.panelIndex - panelsLength;
+            this.calcPanelIndex(this.panelIndex);
+        }
+        return;
     }
 
     nextPanel() {
-        this.setPanelIndex(this.panelIndex += 1);
+        this.panelOrientationIndex += 1;
+        this.calcPanelIndex(this.panelOrientationIndex);
+        this.updatePanels();
     }
 
     previousPanel() {
-        this.setPanelIndex(this.panelIndex -= 1);
+        this.panelOrientationIndex -= 1;
+        this.calcPanelIndex(this.panelOrientationIndex);
+        this.updatePanels();
     }
 
     addPanel() {
@@ -139,7 +153,7 @@ export class Carousel extends Component {
             panel.style.transform = `rotateY(${rotY}deg) translateZ(${translateZ + this.panelOptions.width.unit})`;
         });
 
-        this.panelContainer.style.transform = `translateZ(${MathFunctions.invert(translateZ) + this.panelOptions.width.unit}) rotateY(${(this.panelIndex / panels.length) * -360}deg) `;
+        this.panelContainer.style.transform = `translateZ(${MathFunctions.invert(translateZ) + this.panelOptions.width.unit}) rotateY(${(this.panelOrientationIndex / panels.length) * -360}deg) `;
     }
 
     calcPanelYRotation(panelsLength, i) {
