@@ -53,6 +53,12 @@ export class Carousel extends Component {
     }
 
     wheel(e) {
+        // don't rotate the Carousel when we are over a scrollable DIV on the surface of a panel
+        const scrollableDiv = e.path.find(el => el.nodeName.toLowerCase() === "div");
+        if (scrollableDiv.offsetHeight < scrollableDiv.scrollHeight) {
+            return;
+        }
+
         e.deltaY < 0 ? this.nextPanel() : this.previousPanel();
     }
 
