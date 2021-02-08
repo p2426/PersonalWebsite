@@ -8,6 +8,8 @@ import { MathFunctions } from './mathfunctions';
 // UI
 import { Component } from './ui/component';
 import { Carousel } from './ui/components/carousel';
+import { CarouselPanelIndicator } from './ui/components/carousel-panel-indicator';
+import { CarouselPanelFlipper } from './ui/components/carousel-panel-flipper';
 import { Scroller } from './ui/components/scroller';
 import { Debugger } from './ui/components/debugger';
 
@@ -30,7 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Events.attachUIClickEvents();
 
     // -- UI Components
+    CarouselPanelIndicator.init();
     Carousel.init();
+    CarouselPanelFlipper.init();
     Scroller.init();
     Debugger.init();
     console.log("== Initialised Components ==");

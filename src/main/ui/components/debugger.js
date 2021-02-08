@@ -13,7 +13,7 @@ export class Debugger extends Component {
     }
 
     1() {
-        const carousel = Component.get("main_carousel");
+        const carousel = Component.get("carousel");
         carousel.addPanel();
     }
 }

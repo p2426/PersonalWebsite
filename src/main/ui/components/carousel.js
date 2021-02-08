@@ -5,9 +5,10 @@ export class Carousel extends Component {
 
     static initDataAttribute = "carousel";
 
-    scope = this.element;
     panelIndex = 0;
     panelOrientationIndex = 0;
+    panelAxis = "Y";
+    panelIndicator = Component.get("carousel_panel_indicator");
 
     carouselOptions = {
         perspective: {
@@ -33,7 +34,7 @@ export class Carousel extends Component {
         },
         spacing: {
             enabled: true,
-            amount: 0,
+            amount: 20,
         },
     };
 
@@ -41,10 +42,7 @@ export class Carousel extends Component {
         super(node);
         this.setPerspective();
         this.updatePanels();
-
-        this.panels.forEach(panel => {
-            panel.style.border = `5px solid rgb(${MathFunctions.randomRange(0, 255)}, ${MathFunctions.randomRange(0, 255)}, ${MathFunctions.randomRange(0, 255)})`;
-        });
+        this.setupPanelIndicator();
     }
 
     resize(e) {
@@ -77,19 +75,35 @@ export class Carousel extends Component {
     }
 
     get panelContainer() {
-        return this.scope.querySelector('.carousel');
+        return this.element.querySelector('.carousel');
     }
 
     get panels() {
-        return Array.from(this.scope.querySelectorAll('.carousel__panel'));
+        return Array.from(this.element.querySelectorAll('.carousel__panel'));
     }
 
     get panelTemplate() {
-        return `<div class="carousel__panel">${this.panels.length + 1}</div>`;
+        return `<div class="carousel__panel">
+            <div class="carousel__panel-placeholder">${this.panels.length + 1}</div>
+        </div>`;
     }
 
     setPerspective(amount = this.carouselOptions.perspective.amount, unit = this.carouselOptions.perspective.unit) {
         this.element.style.perspective = amount + unit;
+    }
+
+    setPanelAxis(axis) {
+        this.panelAxis = axis;
+        this.updatePanels();
+    }
+
+    setupPanelIndicator() {
+        this.panels.forEach((panel, index) => {
+            this.panelIndicator.addIndicator();
+            if (index === this.panelIndex) {
+                this.panelIndicator.setActive(index);
+            }
+        });
     }
 
     calcPanelIndex(i) {
@@ -109,20 +123,21 @@ export class Carousel extends Component {
     nextPanel() {
         this.panelOrientationIndex += 1;
         this.calcPanelIndex(this.panelOrientationIndex);
+        this.panelIndicator.setActive(this.panelIndex);
         this.updatePanels();
     }
 
     previousPanel() {
         this.panelOrientationIndex -= 1;
         this.calcPanelIndex(this.panelOrientationIndex);
+        this.panelIndicator.setActive(this.panelIndex);
         this.updatePanels();
     }
 
     addPanel() {
-        const newPanel = this.createElementFrom(this.panelTemplate);
-        newPanel.style.border = `5px solid rgb(${MathFunctions.randomRange(0, 255)}, ${MathFunctions.randomRange(0, 255)}, ${MathFunctions.randomRange(0, 255)})`;
-        this.panelContainer.appendChild(newPanel);
+        this.panelContainer.appendChild(this.createElementFrom(this.panelTemplate));
         this.updatePanels();
+        this.panelIndicator.addIndicator();
     }
 
     updatePanels() {
@@ -149,14 +164,14 @@ export class Carousel extends Component {
         const panels = this.panels;
         const translateZ = this.calcPanelZTranslation(panels.length);
         panels.forEach((panel, i) => {
-            const rotY = this.calcPanelYRotation(panels.length, i);
-            panel.style.transform = `rotateY(${rotY}deg) translateZ(${translateZ + this.panelOptions.width.unit})`;
+            const rotY = this.calcPanelRotation(panels.length, i);
+            panel.style.transform = `rotate${this.panelAxis}(${rotY}deg) translateZ(${translateZ + this.panelOptions.width.unit})`;
         });
 
-        this.panelContainer.style.transform = `translateZ(${MathFunctions.invert(translateZ) + this.panelOptions.width.unit}) rotateY(${(this.panelOrientationIndex / panels.length) * -360}deg) `;
+        this.panelContainer.style.transform = `translateZ(${MathFunctions.invert(translateZ) + this.panelOptions.width.unit}) rotate${this.panelAxis}(${(this.panelOrientationIndex / panels.length) * -360}deg) `;
     }
 
-    calcPanelYRotation(panelsLength, i) {
+    calcPanelRotation(panelsLength, i) {
         return (360 / panelsLength) * i;
     }
 
