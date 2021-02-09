@@ -12,7 +12,7 @@ export class Carousel extends Component {
 
     carouselOptions = {
         perspective: {
-            amount: 1000,
+            amount: window.innerWidth,
             unit: "px"
         },
     }
