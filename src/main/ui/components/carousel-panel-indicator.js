@@ -23,4 +23,14 @@ export class CarouselPanelIndicator extends Component {
         });
         indicators[i].classList.add("carousel__panel-indicator-item--selected");
     }
+
+    setAxis(axis) {
+        if (axis === "Y") {
+            this.element.classList.remove("carousel__panel-indicator--x");
+            this.element.classList.add("carousel__panel-indicator--y");
+        } else {
+            this.element.classList.remove("carousel__panel-indicator--y");
+            this.element.classList.add("carousel__panel-indicator--x");
+        }
+    }
 }

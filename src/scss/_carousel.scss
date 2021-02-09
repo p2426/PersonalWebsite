@@ -14,13 +14,15 @@
         overflow: hidden;
 
         &-indicator {
+
             z-index: 3;
             position: absolute;
             pointer-events: none;
             display: flex;
             justify-content: center;
-            bottom: 4.5vh;
             width: 100%;
+
+            transition: transform, 1s, bottom 1s, left 1s;
 
             &-item {
                 position: relative;
@@ -36,25 +38,33 @@
                     0 0 4px 4px #0ff;
                 }
             }
+
+            &--y {
+                transform: rotate(0deg);
+                bottom: 4.5vh;
+                left: 0;
+            }
+
+            &--x {
+                transform: rotate(90deg);
+                bottom: 50%;
+                left: calc(-50% + 4.5vw);
+            }
         }
 
         &-flipper {
             z-index: 3;
             position: absolute;
-            display: flex;
-            justify-content: flex-end;
-            bottom: 3.1vh;
-            right: 0;
-
-            & > button {
-                outline: none;
-                background: none;
-                border: none;
-                font-size: 4rem;
-                color: #ffffff;
-                margin: 0px 2rem;
-                transition: transform, 1s;
-            }
+            outline: none;
+            background: none;
+            border: 0;
+            bottom: 3.5vh;
+            right: 3.5vw;
+            font-size: 4rem;
+            padding: 20px;
+            box-shadow: 0 0 0 4px #ffffff;
+            transition: transform, 1s;
+            border-radius: 25%;
         }
 
         &-placeholder {

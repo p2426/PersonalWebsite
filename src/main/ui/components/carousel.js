@@ -62,15 +62,28 @@ export class Carousel extends Component {
     }
 
     keydown(e) {
-        switch(e.key) {
-            case "ArrowLeft":
-                this.previousPanel();
-                break;
-            case "ArrowRight":
-                this.nextPanel();
-                break;
-            default:
-                break;
+        if (this.panelAxis === "Y") {
+            switch(e.key) {
+                case "ArrowLeft":
+                    this.previousPanel();
+                    break;
+                case "ArrowRight":
+                    this.nextPanel();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch(e.key) {
+                case "ArrowDown":
+                    this.previousPanel();
+                    break;
+                case "ArrowUp":
+                    this.nextPanel();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -94,6 +107,7 @@ export class Carousel extends Component {
 
     setPanelAxis(axis) {
         this.panelAxis = axis;
+        this.panelIndicator.setAxis(this.panelAxis);
         this.updatePanels();
     }
 
@@ -155,8 +169,13 @@ export class Carousel extends Component {
     applyPanelOptions() {
         const panels = this.panels;
         panels.forEach((panel, i) => {
-            panel.style.width = (this.panelOptions.spacing.enabled ? this.panelOptions.width.amount - this.panelOptions.spacing.amount : this.panelOptions.width.amount) + this.panelOptions.width.unit;
-            panel.style.height = this.panelOptions.height.amount + this.panelOptions.height.unit;
+            if (this.panelAxis === "Y") {
+                panel.style.width = (this.panelOptions.spacing.enabled ? this.panelOptions.width.amount - this.panelOptions.spacing.amount : this.panelOptions.width.amount) + this.panelOptions.width.unit;
+                panel.style.height = this.panelOptions.height.amount + this.panelOptions.height.unit;
+            } else {
+                panel.style.width = this.panelOptions.width.amount + this.panelOptions.width.unit;
+                panel.style.height = (this.panelOptions.spacing.enabled ? this.panelOptions.height.amount - this.panelOptions.spacing.amount : this.panelOptions.height.amount) + this.panelOptions.height.unit;;
+            }
         });
     }
 
@@ -176,6 +195,6 @@ export class Carousel extends Component {
     }
 
     calcPanelZTranslation(panelsLength) {
-        return (this.panelOptions.width.amount / 2) / MathFunctions.getTanFromDegrees(180 / panelsLength);
+        return ((this.panelAxis === "Y" ? this.panelOptions.width.amount : this.panelOptions.height.amount) / 2) / MathFunctions.getTanFromDegrees(180 / panelsLength);
     }
 }

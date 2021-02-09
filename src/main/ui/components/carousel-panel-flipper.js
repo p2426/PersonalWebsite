@@ -5,6 +5,7 @@ export class CarouselPanelFlipper extends Component {
     static initDataAttribute = "carousel-panel-flipper";
 
     carousel = Component.get("carousel");
+    rotationLock = false;
 
     constructor(node) {
         super(node);
@@ -16,11 +17,17 @@ export class CarouselPanelFlipper extends Component {
     }
 
     click(e) {
-        this.carousel.setPanelAxis(this.axis == "Y" ? "X" : "Y");
-        this.rotate();
+        if (!this.rotationLock) {
+            this.carousel.setPanelAxis(this.axis == "Y" ? "X" : "Y");
+            this.rotate();
+            this.rotationLock = true;
+            setTimeout(function() {
+                this.rotationLock = false;
+            }.bind(this), 1000);
+        }
     }
 
     rotate() {
-        this.element.style.transform = `rotate(${this.axis === "Y" ? 0 : 90}deg)`;
+        this.element.style.transform = `rotate(${this.axis === "Y" ? 45 : 135}deg)`;
     }
 }
