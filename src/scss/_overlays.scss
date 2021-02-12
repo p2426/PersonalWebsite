@@ -6,7 +6,33 @@
     width: 100%;
     height: 100vh;
     box-sizing: border-box;
-    box-shadow: inset 0 0 0 4vh #1b1b1b;
+    box-shadow: inset 0 0 64px 64px #1b1b1b;
+
+    &__icon-holder {
+
+        display: flex;
+        justify-content: flex-start;
+        pointer-events: auto;
+        margin: 10px;
+
+        & > * img {
+            background: transparent;
+            opacity: .5;
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 35px;
+            margin: 0 5px;
+            box-shadow: inset 0 0 0 4px #ffffff;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+                box-shadow: inset 0 0 0 4px #ffffff,
+                0 0 2px 2px #fff,
+                0 0 4px 4px #0ff;
+            }
+        }
+    }
 
     &__carousel {
         z-index: 1;

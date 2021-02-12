@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     CarouselPanelFlipper.init();
     Scroller.init();
     Debugger.init();
-    console.log("== Initialised Components ==");
+    console.log("%c== Initialised Components ==", "background: #0ff; padding: 5px;");
     console.log(Component.instances);
 
     // // Textures
