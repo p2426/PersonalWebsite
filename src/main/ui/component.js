@@ -4,6 +4,7 @@ export class Component {
     static initDataAttribute = "";
 
     events = ["click", "mousemove", "change", "keypress", "keydown", "resize", "wheel"];
+    customEvents = ["carouselLoaded"];
 
     element;
 
@@ -44,6 +45,19 @@ export class Component {
                 target?.addEventListener(eventName, this[eventName].bind(this));
             }
         });
+
+        this.customEvents.forEach(eventName => {
+            if (this[eventName] instanceof Function) {
+                document.body.addEventListener(eventName, this[eventName].bind(this));
+            }
+        });
+    }
+
+    dispatchEvent(eventName, detail) {
+        const e = new CustomEvent(eventName, {
+            detail: detail
+        });
+        document.body.dispatchEvent(e);
     }
 
     static createElementFrom(templateLiteral) {

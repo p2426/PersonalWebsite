@@ -7,6 +7,7 @@ import { MathFunctions } from './mathfunctions';
 
 // UI
 import { Component } from './ui/component';
+import { LoadingOverlay } from './ui/components/loading-overlay';
 import { Carousel } from './ui/components/carousel';
 import { CarouselPanelIndicator } from './ui/components/carousel-panel-indicator';
 import { CarouselPanelFlipper } from './ui/components/carousel-panel-flipper';
@@ -32,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Events.attachUIClickEvents();
 
     // -- UI Components
+    LoadingOverlay.init();
     CarouselPanelIndicator.init();
     Carousel.init();
     CarouselPanelFlipper.init();

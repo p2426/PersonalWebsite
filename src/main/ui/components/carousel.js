@@ -43,6 +43,10 @@ export class Carousel extends Component {
         this.setPerspective();
         this.updatePanels();
         this.setupPanelIndicator();
+
+        setTimeout(function() {
+            this.dispatchEvent("carouselLoaded");
+        }.bind(this), 1000);
     }
 
     resize(e) {

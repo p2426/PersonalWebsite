@@ -41,14 +41,14 @@
 
             &--y {
                 transform: rotate(0deg);
-                bottom: 4.5vh;
+                bottom: 2.5vh;
                 left: 0;
             }
 
             &--x {
                 transform: rotate(90deg);
                 bottom: 50%;
-                left: calc(-50% + 4.5vh);
+                left: calc(-50% + 2.5vh);
             }
         }
 

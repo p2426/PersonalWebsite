@@ -3,7 +3,7 @@
     position: relative;
     width: 40px;
     height: 70px;
-    box-shadow: inset 0 0 0 4px #fff;
+    box-shadow: inset 0 0 0 4px #ffffff78;
     border-radius: 25px;
 
     &::before {
@@ -24,7 +24,7 @@
     &__container {
         position: absolute;
         pointer-events: none;
-        bottom: calc(4.5vh + 35px);
+        bottom: calc(3.5vh + 35px);
         left: 49%;
 
         transition: opacity, 2s;

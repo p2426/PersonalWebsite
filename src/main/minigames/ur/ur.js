@@ -52,6 +52,9 @@ export class TheRoyalGameOfUr extends Minigame {
                 console.log(num);
                 this.rollTheDice(num, 0);
             },
+            () => {
+                this.cameraOrbit = true;
+            }
         );
         this.scene.resetSceneDimensions();
     }
@@ -243,9 +246,7 @@ export class TheRoyalGameOfUr extends Minigame {
 
             // Orbit example, make sure that cameraTarget is in the middle of it?
             if (this.cameraOrbit) {
-                this.cameraLerpTargetX = Math.cos(this.time) * 10;
-                this.cameraLerpTargetY = 10;
-                this.cameraLerpTargetZ = Math.sin(this.time) * 10;
+                this.cameraLerpTarget = {x: Math.cos(this.time) * 10, y: 10, z:  Math.sin(this.time) * 10};
             }
 
             // Orbit motion

@@ -4,7 +4,7 @@ export class Scroller extends Component {
 
     static initDataAttribute = "scroller";
 
-    fadeTime = 3000;
+    fadeTime = 4000;
 
     constructor(node) {
         super(node);
