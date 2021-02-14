@@ -13,6 +13,7 @@ import { CarouselPanelIndicator } from './ui/components/carousel-panel-indicator
 import { CarouselPanelFlipper } from './ui/components/carousel-panel-flipper';
 import { Scroller } from './ui/components/scroller';
 import { Debugger } from './ui/components/debugger';
+import { Home } from './ui/components/home';
 
 // 3JS Classes
 import { Scene } from './3js classes/scene';
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     CarouselPanelFlipper.init();
     Scroller.init();
     Debugger.init();
+    Home.init();
     console.log("%c== Initialised Components ==", "background: #0ff; padding: 5px;");
     console.log(Component.instances);
 

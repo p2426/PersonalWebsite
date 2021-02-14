@@ -78,9 +78,15 @@ export class BoardCreator {
                 }
                 this.textureLoader.load(
                     "./textures/ur/photoreal/originalurtopdown-" + String(x).padStart(2, '0') + "-" + String(z).padStart(2, '0') + ".png", 
-                    (texture) => { resolve(texture) },
-                    undefined,
-                    () => { reject() }
+                    (texture) => { 
+                        resolve(texture);
+                    },
+                    (progress) => {
+                        
+                    },
+                    (error) => { 
+                        reject();
+                    }
                 );
             }
         }).then((texture) => {

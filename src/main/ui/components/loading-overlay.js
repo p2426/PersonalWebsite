@@ -4,20 +4,47 @@ export class LoadingOverlay extends Component {
 
     static initDataAttribute = "loading-overlay";
 
-    loadingBar;
-
     constructor(node) {
         super(node);
-        this.loadingBar = this.element.querySelector(".overlay__loading-bar");
-        this.loadingBar.style.width = "50%";
+        this.setLoadingPercent(0);
+    }
+
+    get loadingBar() {
+        return this.element.querySelector(".overlay__loading-bar");
+    }
+
+    get textArea() {
+        return this.element.querySelector('p');
+    }
+
+    setActive(bool, text = "Loading..") {
+        if (bool) {
+            console.log(text);
+            this.element.classList.remove('no--opacity', 'no--pointer-events');
+            this.textArea.textContent = text;
+        } else {
+            this.element.classList.add('no--opacity', 'no--pointer-events');
+            setTimeout(function() {
+                this.setLoadingPercent(0);
+            }.bind(this), 600);
+        }
+    }
+
+    setLoadingPercent(v) {
+        this.loadingBar.style.width = `${v}%`;
     }
 
     carouselLoaded(e) {
-        this.loadingBar.style.transition = "width, .5s";
-        this.loadingBar.style.width = "100%";
-        this.element.style.opacity = 0;
-        setTimeout(function() {
-            this.element.remove();
-        }.bind(this), 1000);
+        this.setLoadingPercent(100);
+        this.setActive(false);
+    }
+
+    minigameStarted(e) {
+        this.setActive(true, "Loading Game..");
+    }
+
+    minigameReady(e) {
+        this.setLoadingPercent(100);
+        this.setActive(false);
     }
 }

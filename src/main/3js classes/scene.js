@@ -105,7 +105,7 @@ export class Scene {
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	applyStyleSettings(styleSettings = { position: 'absolute', bottom: 0, zIndex: 10 }) {
+	applyStyleSettings(styleSettings = { position: 'absolute', bottom: 0, zIndex: 4 }) {
 		this.renderer.domElement.style.position = styleSettings.position;
 		this.renderer.domElement.style.bottom = styleSettings.bottom;
 		this.renderer.domElement.style.zIndex = styleSettings.zIndex;

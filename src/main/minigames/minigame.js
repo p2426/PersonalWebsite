@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Component } from '../ui/component';
 import { CSSClasses } from "../ui/css-classes";
 
 export class Minigame {
@@ -21,13 +22,8 @@ export class Minigame {
     // Controls the standard 'fade' of elements when creating a new minigame
     // Sets a reference of time, and fires Start() and Update() for children
     init() {
-        document.body.classList.add(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
+        this.dispatchEvent("minigameStarted");
         setTimeout(() => {
-            document.getElementById('entryContainer').classList.add(CSSClasses.noDisplay);
-            document.getElementById('home').classList.remove(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
-            document.body.classList.remove(CSSClasses.noOpacity, CSSClasses.noPointerEvents);
-            this.ingameUI = document.getElementById("ingameContainer");
-            this.ingameUI.classList.remove(CSSClasses.noDisplay);
             this.start();
 
             // Setup logic loop
@@ -36,7 +32,7 @@ export class Minigame {
             this.then = Date.now();
             this.interval = 1000 / this.logicFPS;
             this.update();
-        }, 300);
+        }, 500);
     }
 
     // "Interface" function, as starting point for minigame extensions
@@ -54,5 +50,12 @@ export class Minigame {
                 }
             });
         });
+    }
+
+    dispatchEvent(eventName, detail) {
+        const e = new CustomEvent(eventName, {
+            detail: detail
+        });
+        document.body.dispatchEvent(e);
     }
 }

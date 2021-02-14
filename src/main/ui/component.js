@@ -4,7 +4,7 @@ export class Component {
     static initDataAttribute = "";
 
     events = ["click", "mousemove", "change", "keypress", "keydown", "resize", "wheel"];
-    customEvents = ["carouselLoaded"];
+    customEvents = ["minigameStarted", "minigameReady", "carouselLoaded"];
 
     element;
 

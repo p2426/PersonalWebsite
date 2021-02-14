@@ -77,7 +77,7 @@ export class TheRoyalGameOfUr extends Minigame {
 
     start() {
         // UI
-        this.ui = new TheRoyalGameOfUrUI(this.ingameUI, this);
+        //this.ui = new TheRoyalGameOfUrUI(this.ingameUI, this);
 
         // Turn off alpha background
         this.scene.renderer.setClearAlpha(1);
@@ -176,6 +176,7 @@ export class TheRoyalGameOfUr extends Minigame {
             this.ray.objects = this.scene.objects.filter(o => o.id === "boardPiece").map(o => o.mesh);
             this.gamePieceRay.objects = this.scene.objects.filter(o => o.id === "gamePiece").map(o => o.mesh);
             this.readyToRay = true;
+            this.dispatchEvent("minigameReady");
         });
     }
 
