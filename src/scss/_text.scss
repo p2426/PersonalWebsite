@@ -3,6 +3,33 @@
     src: url("./fonts/Dispence-odxz.woff");
 }
 
+@font-face {
+    font-family: "cuneiform";
+    src: url("./fonts/Zarathustra-eDnl.woff");
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.font {
+    &--default {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    &--cuneiform {
+        font-family: cuneiform;
+    }
+
+    &--huge {
+        font-size: 5rem;
+    }
+
+    &--bold {
+        font-weight: bold;
+    }
+
+    &--center {
+        text-align: center;
+    }
 }

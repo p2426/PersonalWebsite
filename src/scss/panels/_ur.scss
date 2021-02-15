@@ -1,0 +1,18 @@
+.carousel__panel {
+    &-ur {
+
+        background: url('./images/clay-tablet2.png');
+        padding: 4rem;
+
+        &--title {
+            text-decoration: underline;
+            text-decoration-color: #000000;
+            text-shadow: 2px 2px 2px #5a4a3b;
+            text-decoration-thickness: from-font;
+        }
+
+        &--body {
+            display: flex;
+        }
+    }
+}

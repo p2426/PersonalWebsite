@@ -14,6 +14,7 @@ import { CarouselPanelFlipper } from './ui/components/carousel-panel-flipper';
 import { Scroller } from './ui/components/scroller';
 import { Debugger } from './ui/components/debugger';
 import { Home } from './ui/components/home';
+import { GameInitialiser } from './ui/components/game-initialiser';
 
 // 3JS Classes
 import { Scene } from './3js classes/scene';
@@ -24,14 +25,12 @@ import { Atlas } from './3js classes/atlas';
 import { OBJObject } from './3js classes/objobject';
 import { CustomShader } from './shaders/customshader';
 import { AtlasShader } from './shaders/atlasshader';
-import { Events } from './ui/events';
 import { Cursor } from './cursor';
 
 // Main entry point
 document.addEventListener("DOMContentLoaded", () => {
+    // -- Static classes
     Cursor.init();
-    Events.attachCursorEvents();
-    Events.attachUIClickEvents();
 
     // -- UI Components
     LoadingOverlay.init();
@@ -41,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Scroller.init();
     Debugger.init();
     Home.init();
+    GameInitialiser.init();
     console.log("%c== Initialised Components ==", "background: #0ff; padding: 5px;");
     console.log(Component.instances);
 

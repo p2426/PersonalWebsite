@@ -1,11 +1,17 @@
 export class Cursor {
 
-    x; y;
+    x;
+    y;
 
     static instance;
 
     static init() {
-        Cursor.instance = new Cursor;
+        Cursor.instance = new Cursor();
+
+        document.addEventListener('mousemove', (e) => {
+            Cursor.setX(e.clientX);
+            Cursor.setY(e.clientY);
+        });
     }
 
     static setX(x) { Cursor.instance.x = x; }

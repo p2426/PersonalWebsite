@@ -9,4 +9,9 @@
     display: flex;
     &--center { justify-content: center; }
     &--top { justify-content: flex-start; }
+    &--column { flex-direction: column; }
+}
+
+.align {
+    &--center { align-self: center; }
 }
