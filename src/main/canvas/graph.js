@@ -128,7 +128,7 @@ export class Graph extends Canvas {
     }
 }
 
-class GraphControlButton extends Component {
+class GraphControl extends Component {
 
     _graphFunction;
 
@@ -136,21 +136,17 @@ class GraphControlButton extends Component {
         super(node);
         this._graphFunction = graphFunction;
     }
+}
+
+class GraphControlButton extends GraphControl {
 
     click(e) {
         this._graphFunction();
     }
 }
 
-class GraphControlSlider extends Component {
-
-    _graphFunction;
-
-    constructor(node, graphFunction) {
-        super(node);
-        this._graphFunction = graphFunction;
-    }
-
+class GraphControlSlider extends GraphControl {
+    
     change(e) {
         this._graphFunction(Number(e.target.value));
     }
