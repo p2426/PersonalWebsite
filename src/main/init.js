@@ -26,7 +26,7 @@ import { OBJObject } from './3js classes/objobject';
 import { CustomShader } from './shaders/customshader';
 import { AtlasShader } from './shaders/atlasshader';
 import { Cursor } from './cursor';
-import { Canvas } from './canvas/canvas';
+import { Graph } from './canvas/graph';
 
 // Main entry point
 document.addEventListener("DOMContentLoaded", () => {
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Debugger.init();
     Home.init();
     GameInitialiser.init();
-    Canvas.init();
+    Graph.init();
     console.log("%c== Initialised Components ==", "background: #0ff; padding: 5px;");
     console.log(Component.instances);
 
