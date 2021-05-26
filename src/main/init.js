@@ -6,7 +6,7 @@ import { UIFunctions } from './uifunctions';
 import { MathFunctions } from './mathfunctions';
 
 // UI
-import { Component } from './ui/component';
+import { Component } from './component';
 import { LoadingOverlay } from './ui/components/loading-overlay';
 import { Carousel } from './ui/components/carousel';
 import { CarouselPanelIndicator } from './ui/components/carousel-panel-indicator';
@@ -26,6 +26,7 @@ import { OBJObject } from './3js classes/objobject';
 import { CustomShader } from './shaders/customshader';
 import { AtlasShader } from './shaders/atlasshader';
 import { Cursor } from './cursor';
+import { Canvas } from './canvas/canvas';
 
 // Main entry point
 document.addEventListener("DOMContentLoaded", () => {
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Debugger.init();
     Home.init();
     GameInitialiser.init();
+    Canvas.init();
     console.log("%c== Initialised Components ==", "background: #0ff; padding: 5px;");
     console.log(Component.instances);
 

@@ -60,6 +60,18 @@ export class Component {
         document.body.dispatchEvent(e);
     }
 
+    getAttribute(name) {
+        return this.element.getAttribute(`data-${this.namespace}-${name}`);
+    }
+
+    get attributes() {
+        const obj = {};
+        this.dataAttributes.forEach(att => {
+            obj[att] = this.getAttribute(att);
+        });
+        return obj;
+    }
+
     static createElementFrom(templateLiteral) {
         const template = document.createElement('template');
         templateLiteral.trim();
@@ -69,5 +81,9 @@ export class Component {
 
     createElementFrom(templateLiteral) {
         return Component.createElementFrom(templateLiteral);
+    }
+
+    appendSibling(element) {
+        this.element.parentNode.insertBefore(element, this.element.nextSibling);
     }
 }

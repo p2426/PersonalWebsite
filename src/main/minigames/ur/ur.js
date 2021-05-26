@@ -180,7 +180,7 @@ export class TheRoyalGameOfUr extends Minigame {
         });
     }
 
-    createDiceGroup(num, variation) {
+    createDiceGroup(num, variation = 0) {
         let diceGroup = [];
         for (let i = 0; i < 4; i++) {
             diceGroup.push(

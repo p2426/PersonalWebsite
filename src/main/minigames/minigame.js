@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Component } from '../ui/component';
+import { Component } from '../component';
 import { CSSClasses } from "../ui/css-classes";
 
 export class Minigame {

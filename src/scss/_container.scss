@@ -1,0 +1,10 @@
+.container {
+    &--large {
+        box-sizing: border-box;
+        margin-top: 2rem;
+        padding: 1rem;
+        width: auto;
+        height: auto;
+        background: white;
+    }
+}

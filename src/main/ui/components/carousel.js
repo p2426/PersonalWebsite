@@ -1,5 +1,5 @@
 import { MathFunctions } from "../../mathfunctions";
-import { Component } from "../component";
+import { Component } from "../../component";
 
 export class Carousel extends Component {
 
@@ -45,7 +45,9 @@ export class Carousel extends Component {
         this.setupPanelIndicator();
 
         setTimeout(function() {
-            this.dispatchEvent("carouselLoaded");
+            this.dispatchEvent("carouselLoaded", {
+                carousel: this
+            });
         }.bind(this), 1000);
     }
 

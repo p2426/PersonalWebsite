@@ -1,8 +1,10 @@
-import { Component } from "../component";
+import { Component } from "../../component";
 
 export class Debugger extends Component {
 
     static initDataAttribute = "debugger";
+
+    carousel;
 
     keypress(e) {
         if (this.element.checked) {
@@ -12,8 +14,11 @@ export class Debugger extends Component {
         }
     }
 
-    1() {
-        const carousel = Component.get("carousel");
-        carousel.addPanel();
+    carouselLoaded(e) {
+        this.carousel = e.detail.carousel;
+    }
+
+    1(e) {
+        this.carousel ? this.carousel.addPanel() : console.error('Debugger: No Carousel detected');
     }
 }

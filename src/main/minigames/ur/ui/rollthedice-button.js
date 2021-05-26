@@ -1,5 +1,5 @@
 import { MathFunctions } from "../../../mathfunctions";
-import { Component } from "../../../ui/component";
+import { Component } from "../../../component";
 
 export class RollTheDiceButton extends Component {
     constructor(settings) {
