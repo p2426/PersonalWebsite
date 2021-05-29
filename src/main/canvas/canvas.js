@@ -16,12 +16,12 @@ export class Canvas extends Component {
     _height = this.element.height;
 
     // Time
-    _fps = 1;
+    fps = 60;
     _time = {
         now: Date.now(),
         delta: Date.now(),
         then: Date.now(),
-        interval: 1000 / this._fps,
+        interval: () => { return 1000 / this.fps },
         deltaTime: 0
     }
 
@@ -32,30 +32,30 @@ export class Canvas extends Component {
             alert('Canvas tag is not supported on your browser.');
         }
 
-        this._startTime();
+        this.startTime();
     }
 
     // Starts time for a canvas with animations
-    _startTime() {
+    startTime() {
         if (this.attributes.animated === "true") {
             requestAnimationFrame(() => {
-                this._startTime();
+                this.startTime();
             });
     
             this._time.now = Date.now();
             this._time.delta = this._time.now - this._time.then;
     
             // Update will be called once the desired frame is met
-            if (this._time.delta > this._time.interval) {
-                this._time.deltaTime = this._time.interval / 1000;
+            if (this._time.delta > this._time.interval()) {
+                this._time.deltaTime = this._time.interval() / 1000;
                 this._time.time += this._time.deltaTime;
-                this._update();
-                this._time.then = this._time.now - (this._time.delta % this._time.interval);
+                this.update();
+                this._time.then = this._time.now - (this._time.delta % this._time.interval());
             }
         }
     }
 
-    _update() {
+    update() {
         console.log('frame');
     }
 

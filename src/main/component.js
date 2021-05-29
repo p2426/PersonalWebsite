@@ -5,6 +5,7 @@ export class Component {
 
     events = ["click", "mousemove", "change", "keypress", "keydown", "resize", "wheel"];
     customEvents = ["minigameStarted", "minigameReady", "carouselLoaded"];
+    dataAttributes = [];
 
     element;
 
@@ -62,6 +63,10 @@ export class Component {
 
     getAttribute(name) {
         return this.element.getAttribute(`data-${this.namespace}-${name}`);
+    }
+
+    setAttribute(name, val) {
+        return this.element.setAttribute(`data-${this.namespace}-${name}`, val);
     }
 
     get attributes() {

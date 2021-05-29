@@ -9,6 +9,9 @@ export class Graph extends Canvas {
     dataAttributes = ['id', 'controls', 'animated'];
     customEvents = [];
 
+    // Animation
+    fps = 1;
+
     // Measurements/Data
     _xMeasurements = 10;
     _xMeasurementPos = {};
@@ -64,10 +67,10 @@ export class Graph extends Canvas {
             click: this.redrawGraph.bind(this),
             instance: undefined
         },
-        randomiseMeasurements: {
-            template: '<button type="button">Random measures</button>',
+        randomiseData: {
+            template: '<button type="button">Random data</button>',
             type: 'button',
-            click: this.randomiseMeasurements.bind(this),
+            click: this.randomiseData.bind(this),
             instance: undefined
         },
         xTextOffset: {
@@ -86,6 +89,12 @@ export class Graph extends Canvas {
             template: '<input type="input" value="100"/>',
             type: 'input',
             change: this.setYUnit.bind(this),
+            instance: undefined
+        },
+        setAnimate: {
+            template: '<input type="checkbox" checked=""/>',
+            type: 'checkbox',
+            change: this.setAnimate.bind(this),
             instance: undefined
         }
     };
@@ -111,10 +120,13 @@ export class Graph extends Canvas {
                         value.instance = new GraphControlButton(element, value.click);
                         break;
                     case 'range':
-                        value.instance = new GraphControlSlider(element, value.change);
+                        value.instance = new GraphControlNumericInput(element, value.change);
                         break;
                     case 'input':
-                        value.instance = new GraphControlSlider(element, value.change);
+                        value.instance = new GraphControlNumericInput(element, value.change);
+                        break;
+                    case 'checkbox':
+                        value.instance = new GraphControlCheckbox(element, value.change);
                         break;
                     default: break;
                 }
@@ -214,40 +226,65 @@ export class Graph extends Canvas {
     }
 
     // Clears and redraws graph with current dimensions
-    redrawGraph(xMeasurements = this._xMeasurements, yMeasurements = this._yMeasurements) {
+    redrawGraph() {
         this.clearCanvas();
-        this.drawVerticalGraph(xMeasurements);
-        this.drawHorizontalGraph(yMeasurements);
+        this._interpretData();
+        this.drawVerticalGraph(this._xMeasurements);
+        this.drawHorizontalGraph(this._yMeasurements);
         this.plotPoints();
     }
 
-    randomiseMeasurements() {
-        this._xMeasurements = Math.round((Math.random() * 24) + 1);
-        this._yMeasurements = Math.round((Math.random() * 24) + 1);
-        this.redrawGraph();
-    }
-
     // Text offsets
+    // @param {Number} val
     setXTextOffset(val) {
         this._bottomOffset = val;
         this.redrawGraph();
     }
 
+    // @param {Number} val
     setYTextOffset(val) {
         this._leftOffset = val;
         this.redrawGraph();
     }
 
     // Line length
+    // @param {Number} val
     setUnitLineLength(val) {
         this._unitLineLength = val;
         this.redrawGraph();
     }
 
     // Y unit
+    // @param {Number} val
     setYUnit(val) {
         this._yUnit = val;
         this._interpretData();
+        this.redrawGraph();
+    }
+
+    // Animate
+    // @param {Boolean} bool
+    setAnimate(val) {
+        this.setAttribute('animated', val.toString());
+        this.startTime();
+    }
+
+    update() {
+        this.randomiseData();
+    }
+
+    // Util
+    randomiseData() {
+        this._data = { 
+            Monday: Math.round(Math.random() * 1000),
+            Tuesday: Math.round(Math.random() * 1000),
+            Wednesday: Math.round(Math.random() * 1000),
+            Thursday: Math.round(Math.random() * 1000),
+            Friday: Math.round(Math.random() * 1000),
+            Saturday: Math.round(Math.random() * 1000),
+            Sunday: Math.round(Math.random() * 1000)
+        };
+        console.log(this._data);
         this.redrawGraph();
     }
 }
@@ -270,7 +307,19 @@ class GraphControlButton extends GraphControl {
     }
 }
 
-class GraphControlSlider extends GraphControl {
+class GraphControlCheckbox extends GraphControl {
+
+    constructor(node, graphFunction) {
+        super(node, graphFunction);
+        this.element.checked = false;
+    }
+
+    change(e) {
+        this._graphFunction(e.target.checked);
+    }
+}
+
+class GraphControlNumericInput extends GraphControl {
     
     change(e) {
         this._graphFunction(Number(e.target.value));
