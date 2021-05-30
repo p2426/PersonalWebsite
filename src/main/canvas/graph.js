@@ -34,7 +34,8 @@ export class Graph extends Canvas {
     _unitLineLength = 5;
 
     // Plotting
-    _pointRadius = 5;
+    _pointRadius = 3;
+    _pointPositions = {};
 
     // Graph offsets
     _topOffset = 10;
@@ -220,6 +221,7 @@ export class Graph extends Canvas {
         for (const [key, value] of Object.entries(data)) {
             const localX = this._xMeasurementPos[key];
             const displacementY = this._graphBounds.bottom - this._graphBounds.top;
+            this._pointPositions[key] = []; // Store point positions for line graph
             value = [value].flat();
             value.forEach(v => {
                 const percentOfMax = Math.round(v / this._yUnitMax * 100);
@@ -227,7 +229,29 @@ export class Graph extends Canvas {
                 this._context.beginPath();
                 this._context.arc(localX, localY, this._pointRadius, 0, Math.PI * 2);
                 this._context.fill();
+                this._pointPositions[key].push({ x: localX, y: localY });
             });
+        }
+        this.joinPlottedPoints();
+    }
+
+    // Draws lines between already plotted points
+    joinPlottedPoints(points = this._pointPositions) {
+        const xLen = Object.keys(points).length;
+        const coords = Object.values(points);
+        const yLen = Math.max(...Object.values(points).map(x => x.length));
+        for (let i = 0; i < yLen; i++) {
+            for (let ii = 0; ii < xLen; ii++) {
+                this._context.beginPath();
+                this._context.moveTo(coords[ii][i].x, coords[ii][i].y);
+                const nextPoint = coords[ii + 1];
+                if (nextPoint) {
+                    this._context.lineTo(nextPoint[i].x, nextPoint[i].y);
+                } else {
+                    this._context.lineTo(coords[ii][i].x, coords[ii][i].y);
+                }
+                this._context.stroke();
+            }
         }
     }
 
