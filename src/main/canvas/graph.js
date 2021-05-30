@@ -19,13 +19,13 @@ export class Graph extends Canvas {
     _yUnit = 100;
     _yUnitMax = undefined;
     _data = { 
-        Monday: 11,
-        Tuesday: 67,
-        Wednesday: 100,
-        Thursday: 250,
-        Friday: 333,
-        Saturday: 412,
-        Sunday: 477
+        Monday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+        Tuesday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+        Wednesday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+        Thursday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+        Friday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+        Saturday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+        Sunday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
     };
 
     // Units
@@ -74,25 +74,25 @@ export class Graph extends Canvas {
             instance: undefined
         },
         xTextOffset: {
-            template: '<input type="range" min="1" max="100" value="50"/>',
+            template: '<div><input type="range" min="1" max="100" value="50"/><label>X offset</label></div>',
             type: 'range',
             change: this.setXTextOffset.bind(this),
             instance: undefined
         },
         yTextOffset: {
-            template: '<input type="range" min="1" max="100" value="50"/>',
+            template: '<div><input type="range" min="1" max="100" value="50"/><label>Y offset</label></div>',
             type: 'range',
             change: this.setYTextOffset.bind(this),
             instance: undefined
         },
         setYUnit: {
-            template: '<input type="input" value="100"/>',
-            type: 'input',
+            template: '<div><input type="number" min="1" max="10000" value="100"/><label>Units</label></div>',
+            type: 'number',
             change: this.setYUnit.bind(this),
             instance: undefined
         },
         setAnimate: {
-            template: '<input type="checkbox" checked=""/>',
+            template: '<div><input type="checkbox"/><label>Animate</label></div>',
             type: 'checkbox',
             change: this.setAnimate.bind(this),
             instance: undefined
@@ -125,6 +125,9 @@ export class Graph extends Canvas {
                     case 'input':
                         value.instance = new GraphControlNumericInput(element, value.change);
                         break;
+                    case 'number':
+                        value.instance = new GraphControlNumericInput(element, value.change);
+                        break;
                     case 'checkbox':
                         value.instance = new GraphControlCheckbox(element, value.change);
                         break;
@@ -140,7 +143,7 @@ export class Graph extends Canvas {
     // @param {Object} data - in the form of { x: [], y: [] }
     _interpretData(measurement = this._yUnit, data = this._data) {
         const dataMin = 0;
-        const dataMax = Math.max(...Object.values(data));
+        const dataMax = Math.max(...Object.values(data).flat());
         this._yUnitMax = Math.ceil(dataMax / measurement) * measurement;
         this._yMeasurements = this._yUnitMax / measurement;
         this._xMeasurements = Object.keys(data).length;
@@ -217,11 +220,14 @@ export class Graph extends Canvas {
         for (const [key, value] of Object.entries(data)) {
             const localX = this._xMeasurementPos[key];
             const displacementY = this._graphBounds.bottom - this._graphBounds.top;
-            const percentOfMax = Math.round(value / this._yUnitMax * 100);
-            const localY = this._graphBounds.bottom - (displacementY * percentOfMax / 100);
-            this._context.beginPath();
-            this._context.arc(localX, localY, this._pointRadius, 0, Math.PI * 2);
-            this._context.fill();
+            value = [value].flat();
+            value.forEach(v => {
+                const percentOfMax = Math.round(v / this._yUnitMax * 100);
+                const localY = this._graphBounds.bottom - (displacementY * percentOfMax / 100);
+                this._context.beginPath();
+                this._context.arc(localX, localY, this._pointRadius, 0, Math.PI * 2);
+                this._context.fill();
+            });
         }
     }
 
@@ -276,15 +282,14 @@ export class Graph extends Canvas {
     // Util
     randomiseData() {
         this._data = { 
-            Monday: Math.round(Math.random() * 1000),
-            Tuesday: Math.round(Math.random() * 1000),
-            Wednesday: Math.round(Math.random() * 1000),
-            Thursday: Math.round(Math.random() * 1000),
-            Friday: Math.round(Math.random() * 1000),
-            Saturday: Math.round(Math.random() * 1000),
-            Sunday: Math.round(Math.random() * 1000)
+            Monday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+            Tuesday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+            Wednesday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+            Thursday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+            Friday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+            Saturday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
+            Sunday: [...Array(3)].map(i => Math.round(Math.random() * 1000)),
         };
-        console.log(this._data);
         this.redrawGraph();
     }
 }
